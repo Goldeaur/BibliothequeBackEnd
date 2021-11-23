@@ -2,6 +2,7 @@ package com.bibliotheque.controller;
 
 import com.bibliotheque.model.dao.Reader;
 import com.bibliotheque.repository.ReaderRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
@@ -9,12 +10,8 @@ import reactor.core.publisher.Flux;
 @RequestMapping("/reader")
 public class ReaderController {
 
-    private final ReaderRepository repo;
-
-    public ReaderController(ReaderRepository repo) {
-        this.repo = repo;
-    }
-
+    @Autowired
+    private ReaderRepository repo;
 
 
 /*    @GetMapping("/reader/{id}")
@@ -24,7 +21,7 @@ public class ReaderController {
 
     @GetMapping
     public Flux<Reader> getAllAccounts() {
-        return repo.findAll();
+        return this.repo.findAll();
     }
 
 /*    @PostMapping("/createReader")
