@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 @Component
-@ConfigurationProperties(prefix = "spring.r2dbc")
 @Validated
 @Getter
 @Setter
+@ConfigurationProperties(prefix = "spring.r2dbc")
 public class R2DBCConfigurationProperties {
 
     private String url;
