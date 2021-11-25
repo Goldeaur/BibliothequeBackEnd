@@ -7,6 +7,5 @@ CREATE TABLE IF NOT EXISTS reader (
   city varchar(250) DEFAULT NULL,
   creation_date BIGINT not null,
   last_modification_date BIGINT not null,
-  status varchar(50) DEFAULT NULL,
-);
+  status varchar(50) DEFAULT NULl);
 
