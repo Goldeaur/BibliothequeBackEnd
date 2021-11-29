@@ -3,8 +3,11 @@ package com.bibliotheque.controller;
 import com.bibliotheque.model.dao.Reader;
 import com.bibliotheque.repository.ReaderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/reader")
@@ -15,7 +18,7 @@ public class ReaderController {
 
 
 /*    @GetMapping("/reader/{id}")
-    public Mono<ResponseEntity<Reader>> getReaders(@PathVariable "id" Long id) {
+    public Mono<ResponseEntity<Reader>> getReaders(@PathVariable Long id) {
         return repo.findById(id).map(acc -> new ResponseEntity<>(acc, HttpStatus.OK)).switchIfEmpty(Mono.just(new ResponseEntity<>(null, HttpStatus.NOT_FOUND)));
     }*/
 
