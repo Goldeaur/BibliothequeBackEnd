@@ -18,7 +18,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @Getter
 @Setter
-public class SpringSecurityConfig {
+public class BibliothequeConfigProperties {
     private String userActuator;
     private String passwordActuator;
 }

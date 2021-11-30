@@ -1,2 +1,6 @@
-package com.bibliotheque.model;public enum Profile {
+package com.bibliotheque.model;
+
+public enum Profile {
+    ADMIN,
+    MEMBER
 }

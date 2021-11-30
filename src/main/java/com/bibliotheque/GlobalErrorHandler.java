@@ -1,7 +1,7 @@
 package com.bibliotheque;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.bibliotheque.exceptions.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.core.annotation.Order;
@@ -15,7 +15,6 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.time.ZonedDateTime;
-import java.util.Locale;
 import java.util.NoSuchElementException;
 
 @Service
@@ -33,8 +32,8 @@ public class GlobalErrorHandler implements ErrorWebExceptionHandler {
 
     @Override
     public Mono<Void> handle(ServerWebExchange serverWebExchange, Throwable throwable) {
-        //DataBufferFactory bufferFactory = serverWebExchange.getResponse().bufferFactory();
-        log.error("ERRROR ON PATH : " + serverWebExchange.getRequest().getURI().toString());
+       // DataBufferFactory bufferFactory = serverWebExchange.getResponse().bufferFactory();
+        log.error("ERROR ON PATH : " + serverWebExchange.getRequest().getURI().toString());
         ServerHttpResponse response = serverWebExchange.getResponse();
         HttpStatus status;
 

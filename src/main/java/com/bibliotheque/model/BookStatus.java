@@ -1,2 +1,4 @@
-package com.bibliotheque.model;public class BookStatus {
+package com.bibliotheque.model;
+
+public class BookStatus {
 }

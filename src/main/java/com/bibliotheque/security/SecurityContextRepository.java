@@ -1,9 +1,10 @@
-package com.muvraline.usermanager.security;
+package com.bibliotheque.security;
 
 
+import com.bibliotheque.model.Profile;
+import com.bibliotheque.model.RequestHeader;
+import com.bibliotheque.utils.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.muvraline.commonlibrary.entities.usermanager.model.header.ReqHeader;
-import com.muvraline.usermanager.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,27 +35,34 @@ public class SecurityContextRepository implements ServerSecurityContextRepositor
     @Override
     public Mono<SecurityContext> load(ServerWebExchange swe) {
         ServerHttpRequest request = swe.getRequest();
-        //if (request.getURI().getPath().startsWith("/actuator"))
-        //    return Mono.empty();
-        ReqHeader reqHeader = null;
+        RequestHeader requestHeader = null;
         try {
-            if (request.getHeaders().getFirst("X-context") != null) {
-                reqHeader = Utils.getHeader(request.getHeaders().getFirst("X-context"), mapper);
-                if (reqHeader.getOpCoAccountId() != null || reqHeader.getTenant().getOpCo() != null || reqHeader.getTenant().getBrand() != null) {
-                    UserDetails user = User.withUsername(Utils.toEncodedAccountId(reqHeader))
-                            .password(Utils.toEncodedAccountId(reqHeader))
-                            .roles(reqHeader.getRole())
+            if (request.getHeaders().getFirst("adminId") != null) {
+                requestHeader = Utils.getHeader(request.getHeaders().getFirst("adminId"), mapper);
+                if (requestHeader.getAdminId() != null) {
+                    UserDetails user = User.withUsername(Utils.toEncodedAdminAccountId(requestHeader))
+                            .password(Utils.toEncodedAdminAccountId(requestHeader))
+                            .roles(Profile.ADMIN.toString())
                             .build();
-                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(reqHeader.getOpCoUserId(), reqHeader.getRole(), user.getAuthorities());
+                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(requestHeader.getAdminId(), requestHeader.getRole(), user.getAuthorities());
                     return Mono.just(new SecurityContextImpl(auth));
                 }
             }
-
+            else if (request.getHeaders().getFirst("readerId") != null) {
+                requestHeader = Utils.getHeader(request.getHeaders().getFirst("readerId"), mapper);
+                if (requestHeader.getAdminId() != null) {
+                    UserDetails user = User.withUsername(Utils.toEncodedAdminAccountId(requestHeader))
+                            .password(Utils.toEncodedReaderId(requestHeader, requestHeader.getReaderId()))
+                            .roles(Profile.MEMBER.toString())
+                            .build();
+                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(requestHeader.getReaderId(), requestHeader.getRole(), user.getAuthorities());
+                    return Mono.just(new SecurityContextImpl(auth));
+                }
+            }
         } catch (Exception e) {
             log.error(e.getMessage());
         }
         return Mono.empty();
-
     }
 }
 

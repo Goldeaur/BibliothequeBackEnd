@@ -1,5 +1,5 @@
 
-package com.muvraline.usermanager.security;
+package com.bibliotheque.security;
 
 import com.nimbusds.jwt.SignedJWT;
 import org.springframework.stereotype.Component;

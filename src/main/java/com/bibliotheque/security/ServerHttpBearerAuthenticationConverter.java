@@ -1,4 +1,4 @@
-package com.muvraline.usermanager.security;
+package com.bibliotheque.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

@@ -1,5 +1,5 @@
 
-package com.muvraline.usermanager.security;
+package com.bibliotheque.security;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.server.ServerWebExchange;

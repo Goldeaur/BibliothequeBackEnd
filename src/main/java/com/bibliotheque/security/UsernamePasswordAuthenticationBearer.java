@@ -1,4 +1,5 @@
-package com.muvraline.usermanager.security;
+package com.bibliotheque.security;
+
 
 import com.nimbusds.jwt.SignedJWT;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,7 +24,9 @@ public class UsernamePasswordAuthenticationBearer {
 		super();
 	}
 
-	public static Mono<Authentication> create(SignedJWT signedJWT) {
+	public static Mono<Authentication> create(
+			SignedJWT signedJWT
+	) {
 		String subject = null;
 		String auths = null;
 
