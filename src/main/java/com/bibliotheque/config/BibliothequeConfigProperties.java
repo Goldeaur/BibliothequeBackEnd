@@ -14,10 +14,7 @@ import org.springframework.validation.annotation.Validated;
 
 @Component
 @PropertySource("classpath:application.properties")
-@ConfigurationProperties("bibliotheque")
-@Validated
 @Getter
-@Setter
 public class BibliothequeConfigProperties {
     private String userActuator;
     private String passwordActuator;
