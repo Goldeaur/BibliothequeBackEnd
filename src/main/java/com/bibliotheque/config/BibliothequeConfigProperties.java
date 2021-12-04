@@ -13,9 +13,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 @Component
-@PropertySource("classpath:application.properties")
+@ConfigurationProperties(prefix = "spring.security.user")
 @Getter
+@Setter
 public class BibliothequeConfigProperties {
-    private String userActuator;
-    private String passwordActuator;
+    private String user;
+    private String password;
 }

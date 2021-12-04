@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 @EnableWebFluxSecurity
 @Configuration
-@Component
 public class SecurityConfig {
 
 
@@ -32,13 +31,13 @@ public class SecurityConfig {
      */
     @Bean
     public MapReactiveUserDetailsService userDetailsRepository() {
-        UserDetails user = User.withUsername(bibliothequeConfigProperties.getUserActuator())
+        UserDetails user = User.withUsername("bibliotheque")
                 .password(
                         //passwordEncoder().encode(
-                        bibliothequeConfigProperties.getPasswordActuator()
+                        "{noop}Gigi&Titi"
                 //)
                 )
-                //.roles("ADMIN")
+                .roles("ADMIN")
                 .build();
         System.out.println("userDetails ?");
         return new MapReactiveUserDetailsService(user);

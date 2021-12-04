@@ -23,7 +23,6 @@ import java.util.List;
 
 @Slf4j
 @Configuration
-@ComponentScan("com.bibliotheque")
 @EnableR2dbcRepositories
 public class DatabaseConfiguration extends AbstractR2dbcConfiguration {
 
