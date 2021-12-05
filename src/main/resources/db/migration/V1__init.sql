@@ -9,3 +9,12 @@ CREATE TABLE IF NOT EXISTS reader (
   last_modification_date BIGINT not null,
   status varchar(50) DEFAULT NULl);
 
+CREATE TABLE IF NOT EXISTS credentials (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  login varchar(250) DEFAULT NULL,
+  password varchar(250) DEFAULT NULL,
+  phone varchar(250) DEFAULT NULL,
+  email varchar(250) DEFAULT NULL,
+  creation_date BIGINT not null,
+  last_modification_date BIGINT not null,
+  role varchar(50) DEFAULT 'READER' not null);
