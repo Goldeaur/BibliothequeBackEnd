@@ -1,8 +1,9 @@
+CREATE TABLE IF NOT EXISTS credentials (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  login varchar(250) DEFAULT NULL,
-  password varchar(250) DEFAULT NULL,
-  phone varchar(250) DEFAULT NULL,
-  email varchar(250) DEFAULT NULL,
+  login varchar(250) NOT NULL,
+  password varchar(250) NOT NULL,
+  phone varchar(250) NOT NULL,
+  email varchar(250) NOT NULL,
   creation_date DATE not null DEFAULT (CURRENT_DATE),
   last_modification_date DATE not null DEFAULT (CURRENT_DATE),
   role varchar(50) DEFAULT 'reader' not null);

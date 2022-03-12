@@ -1,40 +1,36 @@
 package com.bibliotheque.model.dao;
 
-import com.bibliotheque.model.ReaderStatus;
+import com.bibliotheque.model.Role;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.sql.Date;
 
-
-@Table(value = "reader")
+@Table(value = "credentials")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
-public class Reader {
-
+public class Credentials {
     @Id
-    @Column(value = "id")
-    private Long id;
+    @Column(value="id")
+    private long Id;
 
-    @Column(value = "first_name")
-    private String firstName;
+    @Column(value = "login")
+    private String login;
 
-    @Column(value = "last_name")
-    private String lastName;
+    @Column(value = "password")
+    private String password;
 
-    @Column(value = "city")
-    private String city;
+    @Column(value = "phone")
+    private String phone;
 
-    @Column(value = "status")
-    private ReaderStatus status;
+    @Column(value = "email")
+    private String email;
 
     @Column(value = "creation_date")
     private Date creationDate;
@@ -42,5 +38,7 @@ public class Reader {
     @Column(value = "last_modification_date")
     private Date lastModificationDate;
 
+    @Column(value="role")
+    private Role role;
 
 }

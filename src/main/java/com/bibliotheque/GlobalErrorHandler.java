@@ -1,6 +1,6 @@
 package com.bibliotheque;
 
-import com.bibliotheque.exceptions.*;
+import com.bibliotheque.exception.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;

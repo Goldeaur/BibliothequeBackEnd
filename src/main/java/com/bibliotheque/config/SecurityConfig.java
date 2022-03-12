@@ -1,6 +1,7 @@
 package com.bibliotheque.config;
 
 
+import com.bibliotheque.repository.CredentialsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
+
+import javax.security.auth.login.LoginException;
 
 @EnableWebFluxSecurity
 @Configuration
@@ -35,7 +39,7 @@ public class SecurityConfig {
                 .password(
                         //passwordEncoder().encode(
                         "{noop}Gigi&Titi"
-                //)
+                        //)
                 )
                 .roles("ADMIN")
                 .build();
@@ -45,13 +49,13 @@ public class SecurityConfig {
 
 
     //TODO
-   /* @Autowired
-    private UserRepository userRepository;
+    @Autowired
+    private CredentialsRepository credentialsRepository;
 
-    @Override
-    public Mono findByUsername(String username) {
-        return userRepository.findByUsername(username).switchIfEmpty(Mono.defer(() -> Mono.error(new UsernameNotFoundException("User Not Found")))).map(User::toAuthUser);
-    }*/
+    public Mono findByLogin(String login) {
+        return credentialsRepository.findByLogin(login)
+                .switchIfEmpty(Mono.defer(() -> Mono.error(new LoginException("login Not Found"))));
+    }
 
     @Bean
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {

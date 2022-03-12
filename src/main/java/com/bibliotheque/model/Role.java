@@ -1,6 +1,6 @@
 package com.bibliotheque.model;
 
-public enum Profile {
+public enum Role {
     ADMIN,
-    MEMBER
+    READER
 }

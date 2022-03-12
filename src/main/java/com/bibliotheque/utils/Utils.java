@@ -1,7 +1,7 @@
 package com.bibliotheque.utils;
 
 import com.bibliotheque.model.HumanStatus;
-import com.bibliotheque.model.Profile;
+import com.bibliotheque.model.Role;
 import com.bibliotheque.model.RequestHeader;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -45,15 +45,15 @@ public class Utils {
         return reqHeader;
     }
 
-    public static String toRole(Profile profile) {
-        if (profile.equals(Profile.ADMIN)) return "admin";
+    public static String toRole(Role profile) {
+        if (profile.equals(Role.ADMIN)) return "admin";
         return "member";
     }
 
-    public static Profile toProfile(String role) {
+    public static Role toProfile(String role) {
         if (role == null) return null;
-        else if (role.toLowerCase(Locale.ROOT).equals("admin")) return Profile.ADMIN;
-        return Profile.MEMBER;
+        else if (role.toLowerCase(Locale.ROOT).equals("admin")) return Role.ADMIN;
+        return Role.READER;
     }
 
     public static HumanStatus toStatus(String status) {

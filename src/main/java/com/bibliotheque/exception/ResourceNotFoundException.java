@@ -1,4 +1,4 @@
-package com.bibliotheque.exceptions;
+package com.bibliotheque.exception;
 
 import java.util.NoSuchElementException;
 
