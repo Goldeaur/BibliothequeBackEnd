@@ -24,16 +24,16 @@
 		<maven.compiler.source>11</maven.compiler.source>
 		<r2dbc-migrate.version>1.8.0</r2dbc-migrate.version>
 		<r2dbc-pool.version>0.9.0.M2</r2dbc-pool.version>
-		<nimbus-jose-jwt.version>9.4.1</nimbus-jose-jwt.version>
+		<nimbus-jose-jwt.version>9.15.2</nimbus-jose-jwt.version>
 		<aspectjweaver.version>1.9.6</aspectjweaver.version>
 		<junit.jupiter.version>5.4.0</junit.jupiter.version>
 	</properties>
-<!--	<repositories>
+	<repositories>
 		<repository>
 			<id>bibliotheque</id>
 			<url>bibliotheque.ccxnrnxvikmp.eu-west-3.rds.amazonaws.com</url>
 		</repository>
-	</repositories>-->
+	</repositories>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
