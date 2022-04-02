@@ -5,10 +5,8 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 
 @Table(value = "reader")
@@ -37,10 +35,11 @@ public class Reader {
     private ReaderStatus status;
 
     @Column(value = "creation_date")
-    private Date creationDate;
+    private LocalDateTime creationDate;
 
     @Column(value = "last_modification_date")
-    private Date lastModificationDate;
+    private LocalDateTime lastModificationDate;
 
+    private Credentials credentials;
 
 }

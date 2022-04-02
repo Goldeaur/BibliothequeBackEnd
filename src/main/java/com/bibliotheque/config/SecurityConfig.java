@@ -1,7 +1,7 @@
 package com.bibliotheque.config;
 
 
-import com.bibliotheque.repository.CredentialsRepository;
+import com.bibliotheque.repository.CustomCredentialsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.MapReactiveUserDetailsServi
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import javax.security.auth.login.LoginException;
@@ -50,12 +49,12 @@ public class SecurityConfig {
 
     //TODO
     @Autowired
-    private CredentialsRepository credentialsRepository;
+    private CustomCredentialsRepository credentialsRepository;
 
-    public Mono findByLogin(String login) {
+  /*  public Mono findByLogin(String login) {
         return credentialsRepository.findByLogin(login)
                 .switchIfEmpty(Mono.defer(() -> Mono.error(new LoginException("login Not Found"))));
-    }
+    }*/
 
     @Bean
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {

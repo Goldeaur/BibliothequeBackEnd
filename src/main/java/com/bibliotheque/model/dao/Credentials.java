@@ -6,7 +6,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
+
 
 @Table(value = "credentials")
 @Data
@@ -18,7 +19,7 @@ import java.sql.Date;
 public class Credentials {
     @Id
     @Column(value="id")
-    private long Id;
+    private Long Id;
 
     @Column(value = "login")
     private String login;
@@ -33,10 +34,10 @@ public class Credentials {
     private String email;
 
     @Column(value = "creation_date")
-    private Date creationDate;
+    private LocalDateTime creationDate;
 
     @Column(value = "last_modification_date")
-    private Date lastModificationDate;
+    private LocalDateTime lastModificationDate;
 
     @Column(value="role")
     private Role role;
