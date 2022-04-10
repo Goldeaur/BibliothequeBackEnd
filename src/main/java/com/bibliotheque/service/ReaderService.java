@@ -34,12 +34,12 @@ public class ReaderService {
     private CredentialsService credentialsService;
 
 
-    public Flux<Reader> findAll() {
-        return this.readerRepo.findAll();
+    public Flux<ReaderResponse> findAll() {
+        return this.readerRepo.findAll().flatMap(this::convertIntoResponse);
     }
 
-    public Mono<Reader> findById(Long id) {
-        return this.readerRepo.findById(id);
+    public Mono<ReaderResponse> findById(Long id) {
+        return this.readerRepo.findById(id).flatMap(this::convertIntoResponse);
     }
 
     public Mono<ReaderResponse> createReader(ReaderRequest readerRequest) {

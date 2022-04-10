@@ -23,12 +23,12 @@ public class ReaderController {
 
 
     @GetMapping("/{id}")
-    public Mono<ResponseEntity<Reader>> getReaderById(@PathVariable Long id) {
+    public Mono<ResponseEntity<ReaderResponse>> getReaderById(@PathVariable Long id) {
         return readerService.findById(id).map(acc -> new ResponseEntity<>(acc, HttpStatus.OK)).switchIfEmpty(Mono.just(new ResponseEntity<>(null, HttpStatus.NOT_FOUND)));
     }
 
     @GetMapping
-    public Flux<Reader> getReaders() {
+    public Flux<ReaderResponse> getReaders() {
         return this.readerService.findAll();
     }
 
