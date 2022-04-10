@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class Credentials {
     @Id
     @Column(value="id")
-    private Long Id;
+    private Long id;
 
     @Column(value = "login")
     private String login;
@@ -34,10 +34,10 @@ public class Credentials {
     private String email;
 
     @Column(value = "creation_date")
-    private LocalDateTime creationDate;
+    private Long creationDate;
 
     @Column(value = "last_modification_date")
-    private LocalDateTime lastModificationDate;
+    private Long lastModificationDate;
 
     @Column(value="role")
     private Role role;

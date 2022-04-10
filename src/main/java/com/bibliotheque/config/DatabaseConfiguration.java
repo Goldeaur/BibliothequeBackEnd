@@ -3,15 +3,12 @@ package com.bibliotheque.config;
 
 import io.r2dbc.pool.ConnectionPool;
 import io.r2dbc.pool.ConnectionPoolConfiguration;
-import io.r2dbc.spi.Connection;
 import io.r2dbc.spi.ConnectionFactories;
 import io.r2dbc.spi.ConnectionFactory;
 import io.r2dbc.spi.ConnectionFactoryOptions;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration;
@@ -61,7 +58,6 @@ public class DatabaseConfiguration extends AbstractR2dbcConfiguration {
         List<Object> converterList = new ArrayList<>();
         //TODO
         // create converters and add to List
-        //converterList.add(new ReaderreadConverter());
 
         return converterList;
     }

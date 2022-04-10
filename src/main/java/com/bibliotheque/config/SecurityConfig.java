@@ -10,6 +10,8 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import reactor.core.publisher.Mono;
 
@@ -36,9 +38,9 @@ public class SecurityConfig {
     public MapReactiveUserDetailsService userDetailsRepository() {
         UserDetails user = User.withUsername("bibliotheque")
                 .password(
-                        //passwordEncoder().encode(
-                        "{noop}Gigi&Titi"
-                        //)
+                        passwordEncoder().encode(
+                        "Gigi&Titi"
+                        )
                 )
                 .roles("ADMIN")
                 .build();
@@ -68,5 +70,10 @@ public class SecurityConfig {
                 .and()
                 .formLogin().disable()
                 .build();
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 }

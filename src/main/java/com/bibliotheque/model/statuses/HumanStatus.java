@@ -1,4 +1,4 @@
-package com.bibliotheque.model;
+package com.bibliotheque.model.statuses;
 
 public enum HumanStatus {
     ACTIVATED,

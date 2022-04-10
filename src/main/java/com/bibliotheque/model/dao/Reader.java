@@ -1,6 +1,6 @@
 package com.bibliotheque.model.dao;
 
-import com.bibliotheque.model.ReaderStatus;
+import com.bibliotheque.model.statuses.ReaderStatus;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
@@ -35,11 +35,12 @@ public class Reader {
     private ReaderStatus status;
 
     @Column(value = "creation_date")
-    private LocalDateTime creationDate;
+    private Long creationDate;
 
     @Column(value = "last_modification_date")
-    private LocalDateTime lastModificationDate;
+    private Long lastModificationDate;
 
-    private Credentials credentials;
+    @Column(value = "credentials_id")
+    private Long credentialsId;
 
 }

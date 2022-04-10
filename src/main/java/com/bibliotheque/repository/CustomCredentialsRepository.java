@@ -7,9 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CustomCredentialsRepository extends ReactiveCrudRepository<Credentials, Long> {
 
-    //Mono<Credentials> findByLogin(String login);
-
-    //Mono<Credentials> saveCredentials (UUID id, String login, String password, String phone, String email, Date now, Role role);
-
 
 }
