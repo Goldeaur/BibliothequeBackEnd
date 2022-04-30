@@ -27,14 +27,16 @@ public class CredentialsService {
     }
 
     private Mono<CredentialsResponse> convertIntoResponse(Credentials credentials) {
-        return Mono.just(CredentialsResponse.builder()
-                .creationDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(credentials.getCreationDate()), Utils.getZoneId()))
-                .email(credentials.getEmail())
-                .phone(credentials.getPhone())
-                .id(credentials.getId())
-                .role(credentials.getRole())
-                .lastModificationDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(credentials.getLastModificationDate()), Utils.getZoneId()))
-                .build());
+        return Mono.just(
+                CredentialsResponse.builder()
+                        .creationDate(credentials.getCreationDate())
+                        .email(credentials.getEmail())
+                        .phone(credentials.getPhone())
+                        .id(credentials.getId())
+                        .role(credentials.getRole())
+                        .lastModificationDate(credentials.getLastModificationDate())
+                        .build()
+        );
     }
 
 }

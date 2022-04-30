@@ -4,6 +4,7 @@ import com.bibliotheque.model.Role;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Builder
 @AllArgsConstructor
@@ -18,9 +19,9 @@ public class CredentialsResponse {
 
     private String email;
 
-    private LocalDateTime creationDate;
+    private ZonedDateTime creationDate;
 
-    private LocalDateTime lastModificationDate;
+    private ZonedDateTime lastModificationDate;
 
     private Role role;
 }

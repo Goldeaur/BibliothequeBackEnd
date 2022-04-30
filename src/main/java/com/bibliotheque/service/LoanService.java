@@ -1,4 +1,4 @@
 package com.bibliotheque.service;
 
-public class BorrowService {
+public class LoanService {
 }

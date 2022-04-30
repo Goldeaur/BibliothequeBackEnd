@@ -45,22 +45,21 @@ public class ReaderService {
     public Mono<ReaderResponse> createReader(ReaderRequest readerRequest) {
         LocalDateTime localDateTime = LocalDateTime.now();
         ZonedDateTime zdt = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
-        long now = zdt.toInstant().toEpochMilli();
         CredentialsRequest credentialsRequest = readerRequest.getCredentials();
         Credentials encodedCredentials = Credentials.builder()
                 .email(credentialsRequest.getEmail())
                 .phone(credentialsRequest.getPhone())
                 .password(passwordEncoder.encode(credentialsRequest.getPassword()))
                 .role(credentialsRequest.getRole())
-                .creationDate(now)
-                .lastModificationDate(now)
+                .creationDate(zdt)
+                .lastModificationDate(zdt)
                 .build();
         Mono<CredentialsResponse> credentialsMono = this.credentialsService.saveCredentials(encodedCredentials);
         return credentialsMono.flatMap(credentialsResponse -> {
             Reader readerToSave = Reader.builder()
                     .city(readerRequest.getCity())
-                    .creationDate(now)
-                    .lastModificationDate(now)
+                    .creationDate(zdt)
+                    .lastModificationDate(zdt)
                     .firstName(readerRequest.getFirstName())
                     .lastName(readerRequest.getLastName())
                     .credentialsId(credentialsResponse.getId())
@@ -76,16 +75,17 @@ public class ReaderService {
                 Mono.error(new ResourceNotFoundException("This credentials does not exist yet"))
         ).flatMap(
                 credentialsResponse ->
-                    Mono.just(ReaderResponse.builder()
-                            .id(reader.getId())
-                            .firstName(reader.getFirstName())
-                            .lastName(reader.getLastName())
-                            .city(reader.getCity())
-                            .creationDate(Instant.ofEpochMilli(reader.getCreationDate()).atZone(Utils.getZoneId()).toLocalDateTime())
-                            .lastModificationDate(Instant.ofEpochMilli(reader.getLastModificationDate()).atZone(Utils.getZoneId()).toLocalDateTime())
-                            .credentials(credentialsResponse)
-                            .status(reader.getStatus())
-                            .build())
-                );
+                        Mono.just(
+                                ReaderResponse.builder()
+                                        .id(reader.getId())
+                                        .firstName(reader.getFirstName())
+                                        .lastName(reader.getLastName())
+                                        .city(reader.getCity())
+                                        .creationDate(reader.getCreationDate())
+                                        .lastModificationDate(reader.getLastModificationDate())
+                                        .credentials(credentialsResponse)
+                                        .status(reader.getStatus())
+                                        .build())
+        );
     }
 }

@@ -20,9 +20,7 @@ public class ReaderController {
     @Autowired
     private ReaderService readerService;
 
-
-
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public Mono<ResponseEntity<ReaderResponse>> getReaderById(@PathVariable Long id) {
         return readerService.findById(id).map(acc -> new ResponseEntity<>(acc, HttpStatus.OK)).switchIfEmpty(Mono.just(new ResponseEntity<>(null, HttpStatus.NOT_FOUND)));
     }
