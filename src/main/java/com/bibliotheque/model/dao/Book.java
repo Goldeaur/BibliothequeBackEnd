@@ -1,15 +1,12 @@
 package com.bibliotheque.model.dao;
 
-import com.bibliotheque.model.Role;
 import com.bibliotheque.model.statuses.BookStatus;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Table(value = "book")
 @Data
@@ -54,12 +51,10 @@ public class Book {
     private String refBibli;
 
     @Column(value = "creation_date")
-    @CreatedDate
-    private ZonedDateTime creationDate;
+    private LocalDateTime creationDate;
 
     @Column(value = "last_modification_date")
-    @LastModifiedDate
-    private ZonedDateTime lastModificationDate;
+    private LocalDateTime lastModificationDate;
 
     @Column(value="status")
     private BookStatus status;
