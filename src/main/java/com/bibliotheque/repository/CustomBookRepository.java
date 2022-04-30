@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CustomBookRepository extends ReactiveCrudRepository<Book, Long> {
+
+
+
 }
