@@ -1,23 +1,19 @@
 package com.bibliotheque.model.dto;
 
+import com.bibliotheque.model.statuses.BookStatus;
 
-import lombok.*;
+public record BookRequest(
+        long isbn,
+        String title,
+        String author,
+        String epoch,
+        String nationality,
+        String type,
+        String subType,
+        String readerCategory,
+        String comment,
+        String refBibli,
+        BookStatus status
+) {
 
-@Builder
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class BookRequest {
-
-    private long  isbn;
-    private String title;
-    private String author;
-    private String epoch;
-    private String nationality;
-    private String type;
-    private String subType;
-    private String readerCategory;
-    private String comment;
-    private String refBibli;
 }

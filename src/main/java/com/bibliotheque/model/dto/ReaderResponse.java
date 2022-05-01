@@ -4,7 +4,6 @@ import com.bibliotheque.model.statuses.ReaderStatus;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 @Builder
 @Getter
@@ -17,8 +16,8 @@ public class ReaderResponse {
     private String firstName;
     private String lastName;
     private String city;
-    private ZonedDateTime creationDate;
-    private ZonedDateTime lastModificationDate;
+    private LocalDateTime creationDate;
+    private LocalDateTime lastModificationDate;
     private CredentialsResponse credentials;
     private ReaderStatus status;
 }
