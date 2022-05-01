@@ -3,7 +3,7 @@ package com.bibliotheque.model.dto;
 import com.bibliotheque.model.statuses.BookStatus;
 
 public record BookRequest(
-        long isbn,
+        Long isbn,
         String title,
         String author,
         String epoch,
