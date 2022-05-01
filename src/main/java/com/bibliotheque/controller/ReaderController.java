@@ -1,6 +1,5 @@
 package com.bibliotheque.controller;
 
-import com.bibliotheque.model.dao.Reader;
 import com.bibliotheque.model.dto.ReaderRequest;
 import com.bibliotheque.model.dto.ReaderResponse;
 import com.bibliotheque.service.ReaderService;
@@ -34,7 +33,5 @@ public class ReaderController {
     public Mono<ResponseEntity<ReaderResponse>> createReader(@RequestBody ReaderRequest reader) {
         return readerService.createReader(reader).map(acc -> new ResponseEntity<>(acc, HttpStatus.CREATED));
     }
-
-
 
 }

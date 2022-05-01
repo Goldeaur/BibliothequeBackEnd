@@ -1,7 +1,9 @@
 package com.bibliotheque.model.dto;
 
 import com.bibliotheque.model.statuses.BookStatus;
+import lombok.Builder;
 
+@Builder
 public record BookRequest(
         Long isbn,
         String title,

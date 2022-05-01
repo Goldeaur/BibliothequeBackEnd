@@ -8,7 +8,6 @@ import com.bibliotheque.model.dto.CredentialsResponse;
 import com.bibliotheque.model.dto.ReaderRequest;
 import com.bibliotheque.model.dto.ReaderResponse;
 import com.bibliotheque.repository.CustomReaderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -19,16 +18,17 @@ import java.time.LocalDateTime;
 @Service
 public class ReaderService {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private CustomReaderRepository readerRepo;
+    private final CustomReaderRepository readerRepo;
 
+    private final CredentialsService credentialsService;
 
-    @Autowired
-    private CredentialsService credentialsService;
-
+    public ReaderService(PasswordEncoder passwordEncoder, CustomReaderRepository readerRepo, CredentialsService credentialsService) {
+        this.passwordEncoder = passwordEncoder;
+        this.readerRepo = readerRepo;
+        this.credentialsService = credentialsService;
+    }
 
     public Flux<ReaderResponse> findAll() {
         return this.readerRepo.findAll().flatMap(this::convertIntoResponse);
@@ -40,27 +40,26 @@ public class ReaderService {
 
     public Mono<ReaderResponse> createReader(ReaderRequest readerRequest) {
         LocalDateTime now = LocalDateTime.now();
-        CredentialsRequest credentialsRequest = readerRequest.getCredentials();
+        CredentialsRequest credentialsRequest = readerRequest.credentials();
         Credentials encodedCredentials = Credentials.builder()
-                .email(credentialsRequest.getEmail())
-                .phone(credentialsRequest.getPhone())
-                .password(passwordEncoder.encode(credentialsRequest.getPassword()))
-                .role(credentialsRequest.getRole())
+                .email(credentialsRequest.email())
+                .phone(credentialsRequest.phone())
+                .password(passwordEncoder.encode(credentialsRequest.password()))
+                .role(credentialsRequest.role())
                 .creationDate(now)
                 .lastModificationDate(now)
                 .build();
         Mono<CredentialsResponse> credentialsMono = this.credentialsService.saveCredentials(encodedCredentials);
         return credentialsMono.flatMap(credentialsResponse -> {
             Reader readerToSave = Reader.builder()
-                    .city(readerRequest.getCity())
+                    .city(readerRequest.city())
                     .creationDate(now)
                     .lastModificationDate(now)
-                    .firstName(readerRequest.getFirstName())
-                    .lastName(readerRequest.getLastName())
-                    .credentialsId(credentialsResponse.getId())
-                    .status(readerRequest.getStatus())
+                    .firstName(readerRequest.firstName())
+                    .lastName(readerRequest.lastName())
+                    .credentialsId(credentialsResponse.id())
+                    .status(readerRequest.status())
                     .build();
-
             return this.readerRepo.save(readerToSave).flatMap(this::convertIntoResponse);
         });
     }
@@ -80,7 +79,6 @@ public class ReaderService {
                                         .lastModificationDate(reader.getLastModificationDate())
                                         .credentials(credentialsResponse)
                                         .status(reader.getStatus())
-                                        .build())
-        );
+                                        .build()));
     }
 }

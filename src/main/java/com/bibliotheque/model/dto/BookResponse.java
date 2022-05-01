@@ -1,29 +1,25 @@
 package com.bibliotheque.model.dto;
 
 import com.bibliotheque.model.statuses.BookStatus;
-import lombok.*;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 
 @Builder
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class BookResponse {
+public record BookResponse (
+     Long id,
+     Long  isbn,
+     String title,
+     String author,
+     String epoch,
+     String nationality,
+     String type,
+     String subType,
+     String readerCategory,
+     String comment,
+     String refBibli,
+     LocalDateTime creationDate,
+     LocalDateTime lastModificationDate,
+     BookStatus status
+){}
 
-    private long id;
-    private long  isbn;
-    private String title;
-    private String author;
-    private String epoch;
-    private String nationality;
-    private String type;
-    private String subType;
-    private String readerCategory;
-    private String comment;
-    private String refBibli;
-    private LocalDateTime creationDate;
-    private LocalDateTime lastModificationDate;
-    private BookStatus status;
-}

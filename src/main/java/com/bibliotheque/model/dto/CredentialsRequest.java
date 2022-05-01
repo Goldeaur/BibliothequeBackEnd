@@ -1,18 +1,14 @@
 package com.bibliotheque.model.dto;
 
 import com.bibliotheque.model.Role;
-import lombok.*;
+import lombok.Builder;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-@Getter
-@Setter
-public class CredentialsRequest {
-    private String email;
-    private String password;
-    private String phone;
-    private Role role;
-}
+public record CredentialsRequest (
+    String email,
+    String password,
+    String phone,
+    Role role
+){}
 
 
