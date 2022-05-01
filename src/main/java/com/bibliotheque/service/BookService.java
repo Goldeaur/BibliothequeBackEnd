@@ -3,7 +3,6 @@ package com.bibliotheque.service;
 import com.bibliotheque.model.dao.Book;
 import com.bibliotheque.model.dto.BookRequest;
 import com.bibliotheque.model.dto.BookResponse;
-import com.bibliotheque.model.statuses.BookStatus;
 import com.bibliotheque.repository.CustomBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,28 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    public Mono<Book> findById(Long id){
+    public Mono<Book> updateBook (long id, BookRequest bookRequest) {
+
+
+
+
+        return bookRepository.updateBook(id,
+                bookRequest.isbn(),
+                bookRequest.title(),
+                bookRequest.author(),
+                bookRequest.epoch(),
+                bookRequest.nationality(),
+                bookRequest.type(),
+                bookRequest.subType(),
+                bookRequest.readerCategory(),
+                bookRequest.comment(),
+                bookRequest.refBibli(),
+                LocalDateTime.now(),
+                bookRequest.status()
+                );
+    }
+
+    public Mono<Book> findById(long id){
         return bookRepository.findById(id);
     }
 
@@ -35,19 +55,19 @@ public class BookService {
 
     private Book convertIntoDao(BookRequest bookRequest){
         return Book.builder()
-                .isbn(bookRequest.getIsbn())
-                .title(bookRequest.getTitle())
-                .author(bookRequest.getAuthor())
-                .epoch(bookRequest.getEpoch())
-                .nationality(bookRequest.getNationality())
-                .type(bookRequest.getType())
-                .subType(bookRequest.getSubType())
-                .readerCategory(bookRequest.getReaderCategory())
-                .comment(bookRequest.getComment())
-                .refBibli(bookRequest.getRefBibli())
+                .isbn(bookRequest.isbn())
+                .title(bookRequest.title())
+                .author(bookRequest.author())
+                .epoch(bookRequest.epoch())
+                .nationality(bookRequest.nationality())
+                .type(bookRequest.type())
+                .subType(bookRequest.subType())
+                .readerCategory(bookRequest.readerCategory())
+                .comment(bookRequest.comment())
+                .refBibli(bookRequest.refBibli())
                 .creationDate(LocalDateTime.now())
                 .lastModificationDate(LocalDateTime.now())
-                .status(BookStatus.AVAILABLE)
+                .status(bookRequest.status())
                 .build();
     }
 

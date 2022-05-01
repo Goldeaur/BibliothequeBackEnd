@@ -32,5 +32,10 @@ public class BookController {
         return this.bookService.saveBook(book);
     }
 
+    @PutMapping("/{id}")
+    public Mono<Book> updateBook(@PathVariable long id, @RequestBody BookRequest book) {
+        return this.bookService.updateBook(id, book);
+    }
+
 
 }
