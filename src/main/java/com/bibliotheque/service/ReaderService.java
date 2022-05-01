@@ -8,17 +8,13 @@ import com.bibliotheque.model.dto.CredentialsResponse;
 import com.bibliotheque.model.dto.ReaderRequest;
 import com.bibliotheque.model.dto.ReaderResponse;
 import com.bibliotheque.repository.CustomReaderRepository;
-import com.bibliotheque.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 @Service
 public class ReaderService {
@@ -43,23 +39,22 @@ public class ReaderService {
     }
 
     public Mono<ReaderResponse> createReader(ReaderRequest readerRequest) {
-        LocalDateTime localDateTime = LocalDateTime.now();
-        ZonedDateTime zdt = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
+        LocalDateTime now = LocalDateTime.now();
         CredentialsRequest credentialsRequest = readerRequest.getCredentials();
         Credentials encodedCredentials = Credentials.builder()
                 .email(credentialsRequest.getEmail())
                 .phone(credentialsRequest.getPhone())
                 .password(passwordEncoder.encode(credentialsRequest.getPassword()))
                 .role(credentialsRequest.getRole())
-                .creationDate(zdt)
-                .lastModificationDate(zdt)
+                .creationDate(now)
+                .lastModificationDate(now)
                 .build();
         Mono<CredentialsResponse> credentialsMono = this.credentialsService.saveCredentials(encodedCredentials);
         return credentialsMono.flatMap(credentialsResponse -> {
             Reader readerToSave = Reader.builder()
                     .city(readerRequest.getCity())
-                    .creationDate(zdt)
-                    .lastModificationDate(zdt)
+                    .creationDate(now)
+                    .lastModificationDate(now)
                     .firstName(readerRequest.getFirstName())
                     .lastName(readerRequest.getLastName())
                     .credentialsId(credentialsResponse.getId())

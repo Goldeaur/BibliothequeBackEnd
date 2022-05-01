@@ -8,7 +8,6 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 @Table(value = "borrow")
 @Data
@@ -27,10 +26,10 @@ public class Loan {
 
     @Column(value = "borrow_date")
     @CreatedDate
-    private ZonedDateTime borrowDate;
+    private LocalDateTime borrowDate;
 
     @Column(value = "return_date")
-    private ZonedDateTime returnDate;
+    private LocalDateTime returnDate;
 
     private Book book;
 

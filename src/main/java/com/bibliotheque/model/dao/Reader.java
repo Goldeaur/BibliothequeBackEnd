@@ -8,7 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 
 @Table(value = "reader")
@@ -38,11 +38,11 @@ public class Reader {
 
     @Column(value = "creation_date")
     @CreatedDate
-    private ZonedDateTime creationDate;
+    private LocalDateTime creationDate;
 
     @Column(value = "last_modification_date")
     @LastModifiedDate
-    private ZonedDateTime lastModificationDate;
+    private LocalDateTime lastModificationDate;
 
     @Column(value = "credentials_id")
     private Long credentialsId;

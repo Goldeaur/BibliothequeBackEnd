@@ -19,9 +19,9 @@ public class CredentialsResponse {
 
     private String email;
 
-    private ZonedDateTime creationDate;
+    private LocalDateTime creationDate;
 
-    private ZonedDateTime lastModificationDate;
+    private LocalDateTime lastModificationDate;
 
     private Role role;
 }
