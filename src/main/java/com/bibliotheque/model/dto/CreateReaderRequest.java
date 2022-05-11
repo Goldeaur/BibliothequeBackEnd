@@ -4,7 +4,7 @@ import com.bibliotheque.model.statuses.ReaderStatus;
 import lombok.Builder;
 
 @Builder
-public record ReaderRequest (
+public record CreateReaderRequest(
      String firstName,
      String lastName,
      String city,

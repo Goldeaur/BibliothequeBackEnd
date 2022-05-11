@@ -1,7 +1,8 @@
 package com.bibliotheque.controller;
 
-import com.bibliotheque.model.dto.ReaderRequest;
+import com.bibliotheque.model.dto.CreateReaderRequest;
 import com.bibliotheque.model.dto.ReaderResponse;
+import com.bibliotheque.model.dto.UpdateReaderRequest;
 import com.bibliotheque.service.ReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
 
 
 @RestController
@@ -21,7 +21,9 @@ public class ReaderController {
 
     @GetMapping("{id}")
     public Mono<ResponseEntity<ReaderResponse>> getReaderById(@PathVariable Long id) {
-        return readerService.findById(id).map(acc -> new ResponseEntity<>(acc, HttpStatus.OK)).switchIfEmpty(Mono.just(new ResponseEntity<>(null, HttpStatus.NOT_FOUND)));
+        return readerService.findById(id)
+                .map(readerResponse -> new ResponseEntity<>(readerResponse, HttpStatus.OK))
+                .switchIfEmpty(Mono.just(new ResponseEntity<>(null, HttpStatus.NOT_FOUND)));
     }
 
     @GetMapping
@@ -30,8 +32,15 @@ public class ReaderController {
     }
 
     @PostMapping()
-    public Mono<ResponseEntity<ReaderResponse>> createReader(@RequestBody ReaderRequest reader) {
-        return readerService.createReader(reader).map(acc -> new ResponseEntity<>(acc, HttpStatus.CREATED));
+    public Mono<ResponseEntity<ReaderResponse>> createReader(@RequestBody CreateReaderRequest reader) {
+        return readerService.createReader(reader)
+                .map(readerResponse -> new ResponseEntity<>(readerResponse, HttpStatus.CREATED));
+    }
+
+
+    @PutMapping("{id}")
+            public Mono<ReaderResponse> updateReader(@PathVariable Long id, @RequestBody UpdateReaderRequest readerRequest) {
+        return readerService.updateReader(id, readerRequest);
     }
 
 }

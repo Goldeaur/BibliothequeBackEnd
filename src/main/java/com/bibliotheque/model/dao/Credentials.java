@@ -23,9 +23,6 @@ public class Credentials {
     @Column(value="id")
     private Long id;
 
-    @Column(value = "login")
-    private String login;
-
     @Column(value = "password")
     private String password;
 

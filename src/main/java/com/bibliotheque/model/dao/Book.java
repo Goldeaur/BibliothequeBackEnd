@@ -18,10 +18,10 @@ import java.time.LocalDateTime;
 public class Book {
     @Id
     @Column(value="id")
-    private long Id;
+    private Long Id;
 
     @Column(value = "isbn")
-    private long isbn;
+    private Long isbn;
 
     @Column(value = "title")
     private String title;

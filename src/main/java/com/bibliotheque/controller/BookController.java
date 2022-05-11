@@ -1,11 +1,11 @@
 package com.bibliotheque.controller;
 
 
-import com.bibliotheque.model.dao.Book;
 import com.bibliotheque.model.dto.BookRequest;
 import com.bibliotheque.model.dto.BookResponse;
 import com.bibliotheque.service.BookService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -14,8 +14,11 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/book")
 public class BookController {
 
-    @Autowired
-    private BookService bookService;
+    private final BookService bookService;
+
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     @GetMapping
     public Flux<BookResponse> getBooks() {
@@ -23,17 +26,18 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public Mono<Book> getBook(@PathVariable Long id) {
+    public Mono<BookResponse> getBook(@PathVariable Long id) {
         return this.bookService.findById(id);
     }
 
     @PostMapping
-    public Mono<Book> createBook(@RequestBody BookRequest book) {
-        return this.bookService.saveBook(book);
+    public Mono<ResponseEntity<BookResponse>> createBook(@RequestBody BookRequest book) {
+        return this.bookService.saveBook(book)
+                .map(bookResponse -> new ResponseEntity<>(bookResponse, HttpStatus.CREATED));
     }
 
     @PutMapping("/{id}")
-    public Mono<Book> updateBook(@PathVariable long id, @RequestBody BookRequest book) {
+    public Mono<BookResponse> updateBook(@PathVariable Long id, @RequestBody BookRequest book) {
         return this.bookService.updateBook(id, book);
     }
 

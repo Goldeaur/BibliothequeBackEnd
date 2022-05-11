@@ -12,10 +12,8 @@ import java.time.LocalDateTime;
 
 @Repository
 public interface CustomBookRepository extends ReactiveCrudRepository<Book, Long> {
-
-
     @Modifying
-    @Query("""
+    @Query("""           
             UPDATE book SET
             isbn = :isbn,
             title = :title,
@@ -29,10 +27,11 @@ public interface CustomBookRepository extends ReactiveCrudRepository<Book, Long>
             ref_bibli = :refBibli,
             last_modification_date = :now,
             status = :status
-            where id = :id""")
-    Mono<Book> updateBook(
-            long id,
-            long isbn,
+            where id = :id;
+            """)
+    Mono<Object> updateBook(
+            Long id,
+            Long isbn,
             String title,
             String author,
             String epoch,
@@ -45,6 +44,4 @@ public interface CustomBookRepository extends ReactiveCrudRepository<Book, Long>
             LocalDateTime now,
             BookStatus status
     );
-
-    Mono<Book> findById(long id);
 }

@@ -1,8 +1,5 @@
 package com.bibliotheque.model.statuses;
 
 public enum LoanStatus {
-    ONGOING,
-    LATE,
-    TODAY,
-    RETURNED
+    ONGOING, RENEWED, LATE, TODAY, RETURNED
 }

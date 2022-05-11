@@ -1,7 +1,5 @@
 package com.bibliotheque.model.statuses;
 
 public enum BookStatus {
-    BORROWED,
-    AVAILABLE,
-    RESERVED
+    BORROWED, AVAILABLE, RESERVED, LOST, DESTROYED
 }

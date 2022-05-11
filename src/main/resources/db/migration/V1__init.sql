@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS reservation (
         id BIGINT AUTO_INCREMENT PRIMARY KEY,
         creation_date datetime not null default now(),
         end_date datetime not null default now(),
+        return_date datetime not null default now() + 14,
         book_id bigint not null,
         reader_id bigint not null,
         status varchar(50) not null,

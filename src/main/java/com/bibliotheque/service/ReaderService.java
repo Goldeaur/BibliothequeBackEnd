@@ -3,10 +3,7 @@ package com.bibliotheque.service;
 import com.bibliotheque.exception.ResourceNotFoundException;
 import com.bibliotheque.model.dao.Credentials;
 import com.bibliotheque.model.dao.Reader;
-import com.bibliotheque.model.dto.CredentialsRequest;
-import com.bibliotheque.model.dto.CredentialsResponse;
-import com.bibliotheque.model.dto.ReaderRequest;
-import com.bibliotheque.model.dto.ReaderResponse;
+import com.bibliotheque.model.dto.*;
 import com.bibliotheque.repository.CustomReaderRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,7 +35,7 @@ public class ReaderService {
         return this.readerRepo.findById(id).flatMap(this::convertIntoResponse);
     }
 
-    public Mono<ReaderResponse> createReader(ReaderRequest readerRequest) {
+    public Mono<ReaderResponse> createReader(CreateReaderRequest readerRequest) {
         LocalDateTime now = LocalDateTime.now();
         CredentialsRequest credentialsRequest = readerRequest.credentials();
         Credentials encodedCredentials = Credentials.builder()
@@ -64,12 +61,30 @@ public class ReaderService {
         });
     }
 
+    public Mono<ReaderResponse> updateReader(Long idRequested, UpdateReaderRequest readerRequest) {
+        return readerRepo.findById(idRequested)
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Reader with id : " + idRequested + " does not exist")))
+                .flatMap(previousReaderData -> {
+                    LocalDateTime now = LocalDateTime.now();
+                    Reader readerToSave = new Reader(
+                            idRequested,
+                            readerRequest.firstName() != null ? readerRequest.firstName() : previousReaderData.getFirstName(),
+                            readerRequest.lastName() != null ? readerRequest.lastName() : previousReaderData.getLastName(),
+                            readerRequest.city() != null ? readerRequest.city() : previousReaderData.getCity(),
+                            readerRequest.status() != null ? readerRequest.status() : previousReaderData.getStatus(),
+                            previousReaderData.getCreationDate(),
+                            now,
+                           previousReaderData.getCredentialsId()
+                    );
+                           return readerRepo.save(readerToSave).flatMap(this::convertIntoResponse);
+                });
+    }
+
     private Mono<ReaderResponse> convertIntoResponse(Reader reader) {
-        return credentialsService.findById(reader.getCredentialsId()).switchIfEmpty(
-                Mono.error(new ResourceNotFoundException("This credentials does not exist yet"))
-        ).flatMap(
-                credentialsResponse ->
-                        Mono.just(
+        return credentialsService.findById(reader.getCredentialsId())
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("This credentials does not exist")))
+                .map(
+                        credentialsResponse ->
                                 ReaderResponse.builder()
                                         .id(reader.getId())
                                         .firstName(reader.getFirstName())
@@ -79,6 +94,7 @@ public class ReaderService {
                                         .lastModificationDate(reader.getLastModificationDate())
                                         .credentials(credentialsResponse)
                                         .status(reader.getStatus())
-                                        .build()));
+                                        .build());
     }
+
 }
