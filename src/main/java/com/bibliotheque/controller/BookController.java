@@ -30,6 +30,11 @@ public class BookController {
         return this.bookService.findById(id);
     }
 
+    //TODO
+    //getBooksByAuthor
+    //getBooksByTitleLikes
+
+
     @PostMapping
     public Mono<ResponseEntity<BookResponse>> createBook(@RequestBody BookRequest book) {
         return this.bookService.saveBook(book)

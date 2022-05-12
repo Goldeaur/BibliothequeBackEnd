@@ -1,3 +1,23 @@
+CREATE TABLE IF NOT EXISTS book (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  isbn10 varchar(50) DEFAULT NULL,
+  isbn13 varchar(50) DEFAULT NULL,
+  imageLink varchar(500) DEFAULT null,
+  title varchar(250) DEFAULT NULL,
+  author varchar(250) DEFAULT NULL,
+  epoch varchar (250) DEFAULT NULL,
+  nationality varchar(250) DEFAULT NULL,
+  type varchar(250) DEFAULT NULL,
+  sub_type varchar(250) DEFAULT NULL,
+  reader_category varchar(250) DEFAULT NULL,
+  comment varchar(250) DEFAULT NULL,
+  description TEXT DEFAULT NULL,
+  ref_bibli varchar (250) NOT NULL,
+  creation_date datetime not null default now(),
+  last_modification_date datetime not null default now(),
+  status varchar(50) not null DEFAULT 'AVAILABLE');
+
+
 CREATE TABLE IF NOT EXISTS credentials (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
   login varchar(250) NOT NULL,
@@ -20,22 +40,6 @@ CREATE TABLE IF NOT EXISTS reader (
   CONSTRAINT FK_reader_credentials FOREIGN KEY (credentials_id)
   REFERENCES credentials(id)  ON DELETE CASCADE);
 
-CREATE TABLE IF NOT EXISTS book (
-  id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  isbn BIGINT DEFAULT NULL,
-  title varchar(250) DEFAULT NULL,
-  author varchar(250) DEFAULT NULL,
-  epoch varchar (250) DEFAULT NULL,
-  nationality varchar(250) DEFAULT NULL,
-  type varchar(250) DEFAULT NULL,
-  sub_type varchar(250) DEFAULT NULL,
-  reader_category varchar(250) DEFAULT NULL,
-  comment varchar(250) DEFAULT NULL,
-  ref_bibli varchar (250) NOT NULL,
-  creation_date datetime not null default now(),
-  last_modification_date datetime not null default now(),
-  status varchar(50) not null DEFAULT 'AVAILABLE');
-
 CREATE TABLE IF NOT EXISTS loan (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     creation_date datetime not null default now(),
@@ -52,8 +56,8 @@ CREATE TABLE IF NOT EXISTS loan (
 CREATE TABLE IF NOT EXISTS reservation (
         id BIGINT AUTO_INCREMENT PRIMARY KEY,
         creation_date datetime not null default now(),
-        end_date datetime not null default now(),
-        return_date datetime not null default now() + 14,
+        end_date datetime not null,
+        return_date datetime,
         book_id bigint not null,
         reader_id bigint not null,
         status varchar(50) not null,

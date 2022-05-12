@@ -13,17 +13,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import reactor.core.publisher.Mono;
-
-import javax.security.auth.login.LoginException;
 
 @EnableWebFluxSecurity
 @Configuration
 public class SecurityConfig {
 
+    private final BibliothequeConfigProperties bibliothequeConfigProperties;
 
-    @Autowired
-    private BibliothequeConfigProperties bibliothequeConfigProperties;
+    public SecurityConfig(BibliothequeConfigProperties bibliothequeConfigProperties, CustomCredentialsRepository credentialsRepository) {
+        this.bibliothequeConfigProperties = bibliothequeConfigProperties;
+        this.credentialsRepository = credentialsRepository;
+    }
 
 
     /*
@@ -44,7 +44,6 @@ public class SecurityConfig {
                 )
                 .roles("ADMIN")
                 .build();
-        System.out.println("userDetails ?");
         return new MapReactiveUserDetailsService(user);
     }
 

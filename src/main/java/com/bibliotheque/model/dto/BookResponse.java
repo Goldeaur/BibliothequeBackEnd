@@ -8,7 +8,8 @@ import java.time.LocalDateTime;
 @Builder
 public record BookResponse (
      Long id,
-     Long  isbn,
+     String isbn10,
+     String isbn13,
      String title,
      String author,
      String epoch,

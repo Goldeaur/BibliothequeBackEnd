@@ -21,7 +21,10 @@ public class Book {
     private Long Id;
 
     @Column(value = "isbn")
-    private Long isbn;
+    private String isbn10;
+
+    @Column(value = "isbn")
+    private String isbn13;
 
     @Column(value = "title")
     private String title;

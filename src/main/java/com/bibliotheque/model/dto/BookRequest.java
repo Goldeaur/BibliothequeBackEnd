@@ -5,7 +5,8 @@ import lombok.Builder;
 
 @Builder
 public record BookRequest(
-        Long isbn,
+        String isbn10,
+        String isbn13,
         String title,
         String author,
         String epoch,

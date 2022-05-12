@@ -33,7 +33,8 @@ public class BookService {
                 .flatMap(bookToUpdate -> {
                     Book bookToSave = new Book(
                             id,
-                            bookRequest.isbn() != null ? bookRequest.isbn() : bookToUpdate.getIsbn(),
+                            bookRequest.isbn10() != null ? bookRequest.isbn10() : bookToUpdate.getIsbn10(),
+                            bookRequest.isbn13() != null ? bookRequest.isbn13() : bookToUpdate.getIsbn13(),
                             bookRequest.title() != null ? bookRequest.title() : bookToUpdate.getTitle(),
                             bookRequest.author() != null ? bookRequest.author() : bookToUpdate.getTitle(),
                             bookRequest.epoch() != null ? bookRequest.epoch() : bookToUpdate.getEpoch(),
@@ -58,7 +59,8 @@ public class BookService {
                 .flatMap(bookToUpdate -> {
                     Book bookToSave = new Book(
                             id,
-                            bookToUpdate.getIsbn(),
+                            bookToUpdate.getIsbn10(),
+                            bookToUpdate.getIsbn13(),
                             bookToUpdate.getTitle(),
                             bookToUpdate.getTitle(),
                             bookToUpdate.getEpoch(),
@@ -89,7 +91,8 @@ public class BookService {
 
     private Book convertIntoDao(BookRequest bookRequest) {
         return Book.builder()
-                .isbn(bookRequest.isbn())
+                .isbn10(bookRequest.isbn10())
+                .isbn13(bookRequest.isbn13())
                 .title(bookRequest.title())
                 .author(bookRequest.author())
                 .epoch(bookRequest.epoch())
@@ -108,7 +111,8 @@ public class BookService {
     private BookResponse convertIntoResponse(Book book) {
         return BookResponse.builder()
                 .id(book.getId())
-                .isbn(book.getIsbn())
+                .isbn10(book.getIsbn10())
+                .isbn13(book.getIsbn13())
                 .author(book.getAuthor())
                 .epoch(book.getEpoch())
                 .nationality(book.getNationality())
