@@ -11,7 +11,7 @@ import java.util.Objects;
 @Service
 public class GoogleService {
 
-
+    String key = "AIzaSyBHlroHFBr8Fs8D3QeHS_JJjvR-8zPwaNE";
 
     public Mono<GoogleBooksResponse> askGoogle (GoogleRequest googleRequest) {
         RestTemplate restTemplate = new RestTemplate();
