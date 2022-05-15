@@ -1,23 +1,19 @@
 package com.bibliotheque.service;
 
+import com.bibliotheque.exception.ErrorMessage;
+import com.bibliotheque.exception.MalformedRequestException;
 import com.bibliotheque.exception.ResourceNotFoundException;
+import com.bibliotheque.exception.UnauthorizedRequestException;
 import com.bibliotheque.model.dao.Book;
 import com.bibliotheque.model.dto.BookRequest;
 import com.bibliotheque.model.dto.BookResponse;
-import com.bibliotheque.model.dto.googleBook.GoogleBooksResponse;
-import com.bibliotheque.model.dto.googleBook.Item;
 import com.bibliotheque.model.statuses.BookStatus;
 import com.bibliotheque.repository.CustomBookRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.text.Normalizer;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
 
 
 @Service
@@ -35,6 +31,27 @@ public class BookService {
     public Mono<BookResponse> saveBook(BookRequest bookRequest) {
         Book book = convertIntoDao(bookRequest);
         return bookRepository.save(book).map(this::convertIntoResponse);
+    }
+
+    public Flux<BookResponse> findBooksToComplete() {
+        return bookRepository.findBooksToComplete()
+                .map(this::convertIntoResponse);
+    }
+
+    public Flux<BookResponse> findBook(BookRequest bookRequest) {
+        if (bookRequest.title() != null) {
+            return bookRepository.findByTitle(bookRequest.title())
+                    .map(this::convertIntoResponse);
+        }
+        if (bookRequest.author() != null) {
+            return bookRepository.findByAuthor(bookRequest.author())
+                    .map(this::convertIntoResponse);
+        }
+        if(bookRequest.type() != null) {
+            return bookRepository.findByType(bookRequest.type())
+                    .map(this::convertIntoResponse);
+        }
+        return Flux.error(new MalformedRequestException("search can't be complete. Title or author or type must not be null"));
     }
 
     public Mono<BookResponse> saveBook(Book book) {

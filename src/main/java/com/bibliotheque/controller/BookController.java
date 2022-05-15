@@ -30,9 +30,15 @@ public class BookController {
         return this.bookService.findById(id);
     }
 
-    //TODO
-    //getBooksByAuthor
-    //getBooksByTitleLikes
+    @GetMapping("/book/")
+    public Flux<BookResponse> getBookByTitle(@RequestBody BookRequest bookRequest) {
+        return this.bookService.findBook(bookRequest);
+    }
+
+    @GetMapping("/incomplete")
+    public Flux<BookResponse> getBooksToComplete() {
+        return this.bookService.findBooksToComplete();
+    }
 
 
     @PostMapping
