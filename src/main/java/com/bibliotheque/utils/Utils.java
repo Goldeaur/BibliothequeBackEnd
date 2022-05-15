@@ -1,6 +1,6 @@
 package com.bibliotheque.utils;
 
-import com.bibliotheque.model.HumanStatus;
+import com.bibliotheque.model.statuses.HumanStatus;
 import com.bibliotheque.model.Role;
 import com.bibliotheque.model.RequestHeader;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 
+import java.time.ZoneId;
 import java.util.Base64;
 import java.util.Locale;
 
@@ -15,7 +16,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Component
 public class Utils {
-
+    public static ZoneId getZoneId(){
+        return ZoneId.of("Europe/Paris");
+    }
 
     public static String toEncodedAdminAccountId(RequestHeader header) {
         return toEncoded(header.getNames(), header.getAdminId());
