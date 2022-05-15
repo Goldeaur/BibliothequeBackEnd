@@ -18,13 +18,16 @@ import java.time.LocalDateTime;
 public class Book {
     @Id
     @Column(value="id")
-    private Long Id;
+    private Long id;
 
-    @Column(value = "isbn")
+    @Column(value = "isbn_10")
     private String isbn10;
 
-    @Column(value = "isbn")
+    @Column(value = "isbn_13")
     private String isbn13;
+
+    @Column(value = "image_link")
+    private String imageLink;
 
     @Column(value = "title")
     private String title;
@@ -49,6 +52,9 @@ public class Book {
 
     @Column(value = "comment")
     private String comment;
+
+    @Column(value = "description")
+    private String description;
 
     @Column(value = "ref_bibli")
     private String refBibli;

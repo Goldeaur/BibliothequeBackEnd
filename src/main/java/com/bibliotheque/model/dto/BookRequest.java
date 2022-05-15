@@ -7,6 +7,7 @@ import lombok.Builder;
 public record BookRequest(
         String isbn10,
         String isbn13,
+        String imageLink,
         String title,
         String author,
         String epoch,
@@ -15,6 +16,7 @@ public record BookRequest(
         String subType,
         String readerCategory,
         String comment,
+        String description,
         String refBibli,
         BookStatus status
 ) {

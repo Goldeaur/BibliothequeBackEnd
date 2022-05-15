@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS book (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  isbn10 varchar(50) DEFAULT NULL,
-  isbn13 varchar(50) DEFAULT NULL,
-  imageLink varchar(500) DEFAULT null,
+  isbn_10 varchar(50) DEFAULT NULL,
+  isbn_13 varchar(50) DEFAULT NULL,
+  image_link varchar(500) DEFAULT null,
   title varchar(250) DEFAULT NULL,
   author varchar(250) DEFAULT NULL,
   epoch varchar (250) DEFAULT NULL,
