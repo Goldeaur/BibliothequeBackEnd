@@ -4,6 +4,7 @@ import com.bibliotheque.exception.ResourceNotFoundException;
 import com.bibliotheque.model.dao.Credentials;
 import com.bibliotheque.model.dao.Reader;
 import com.bibliotheque.model.dto.*;
+import com.bibliotheque.model.statuses.ReaderStatus;
 import com.bibliotheque.repository.CustomReaderRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,12 +28,30 @@ public class ReaderService {
         this.credentialsService = credentialsService;
     }
 
+    public Mono<ReaderResponse> authenticate(CredentialsRequest request){
+        String login = request.email();
+        String password = passwordEncoder.encode(request.password());
+        return this.credentialsService.findByCredentials(login, password)
+                .flatMap(credentialsResponse -> findByCredentials(credentialsResponse.id()));
+
+    }
+
     public Flux<ReaderResponse> findAll() {
         return this.readerRepo.findAll().flatMap(this::convertIntoResponse);
     }
 
+    public Mono<ReaderResponse> findByCredentials (Long credentialId){
+        return readerRepo.findByCredentials(credentialId).flatMap(this::convertIntoResponse);
+    }
+
     public Mono<ReaderResponse> findById(Long id) {
-        return this.readerRepo.findById(id).flatMap(this::convertIntoResponse);
+        return this.readerRepo.findById(id)
+                .flatMap(this::convertIntoResponse);
+    }
+
+    public Flux<ReaderResponse> findByName(String name) {
+        return this.readerRepo.findByName(name)
+                .flatMap(this::convertIntoResponse);
     }
 
     public Mono<ReaderResponse> createReader(CreateReaderRequest readerRequest) {
@@ -53,9 +72,9 @@ public class ReaderService {
                     .creationDate(now)
                     .lastModificationDate(now)
                     .firstName(readerRequest.firstName())
-                    .lastName(readerRequest.lastName())
+                    .lastName(readerRequest.lastName().toUpperCase())
                     .credentialsId(credentialsResponse.id())
-                    .status(readerRequest.status())
+                    .status(ReaderStatus.NEW)
                     .build();
             return this.readerRepo.save(readerToSave).flatMap(this::convertIntoResponse);
         });

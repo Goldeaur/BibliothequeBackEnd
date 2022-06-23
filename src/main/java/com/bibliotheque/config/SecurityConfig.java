@@ -34,7 +34,7 @@ public class SecurityConfig {
      *
      * @return MapReactiveUserDetailsService an InMemory implementation of user details
      */
-    @Bean
+   @Bean
     public MapReactiveUserDetailsService userDetailsRepository() {
         UserDetails user = User.withUsername("bibliotheque")
                 .password(

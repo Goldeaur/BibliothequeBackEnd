@@ -13,55 +13,60 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/loan")
 public class LoanController {
 
-    private final LoanService lonService;
+    private final LoanService loanService;
 
-    public LoanController(LoanService lonService) {
-        this.lonService = lonService;
+    public LoanController(LoanService loanService) {
+        this.loanService = loanService;
     }
 
     @GetMapping
     public Flux<LoanResponse> getLoans(){
-        return this.lonService.findAll();
+        return this.loanService.findAll();
     }
 
     @GetMapping("/{id}")
     public Mono<LoanResponse> getLoan(@PathVariable long id) {
-        return this.lonService.findById(id);
+        return this.loanService.findById(id);
+    }
+
+    @GetMapping("/book/{id}")
+    public Mono<LoanResponse> getLoanByBookId(@PathVariable long id) {
+        return this.loanService.findByBookId(id);
     }
 
     @GetMapping("/today")
     public Flux<LoanResponse> getToday(){
-        return this.lonService.findAllToday();
+        return this.loanService.findAllToday();
     }
 
     @GetMapping("/late")
     public Flux<LoanResponse> getLate(){
-        return this.lonService.findAllLate();
+        return this.loanService.findAllLate();
     }
 
     @GetMapping("/ongoing")
     public Flux<LoanResponse> getOnGoing(){
-        return this.lonService.findAllOnGoing();
+        return this.loanService.findAllOnGoing();
     }
 
     @PostMapping
     public Mono<ResponseEntity<LoanResponse>> createLoan(@RequestBody LoanRequest loan){
-        return this.lonService.saveLoan(loan).map(loanResponse -> new ResponseEntity<>(loanResponse, HttpStatus.CREATED));
+        return this.loanService.saveLoan(loan).map(loanResponse -> new ResponseEntity<>(loanResponse, HttpStatus.CREATED));
     }
 
     @PostMapping("/renew/{id}")
     public Mono<ResponseEntity<LoanResponse>> renewLoan(@PathVariable long id){
-        return this.lonService.renewLoan(id).map(loanResponse -> new ResponseEntity<>(loanResponse, HttpStatus.OK));
+        return this.loanService.renewLoan(id).map(loanResponse -> new ResponseEntity<>(loanResponse, HttpStatus.OK));
     }
 
     @PostMapping("/end/{id}")
     public Mono<ResponseEntity<LoanResponse>> endLoan(@PathVariable long id){
-        return this.lonService.endLoan(id).map(loanResponse -> new ResponseEntity<>(loanResponse, HttpStatus.OK));
+        return this.loanService.endLoan(id).map(loanResponse -> new ResponseEntity<>(loanResponse, HttpStatus.OK));
     }
 
     @GetMapping("/reader/{id}")
     public Flux<LoanResponse> findByReader(@PathVariable long readerId){
-        return this.lonService.findByReader(readerId);
+        return this.loanService.findByReader(readerId);
 
 
     }

@@ -6,28 +6,22 @@ import org.springframework.data.r2dbc.repository.Modifying;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
 @Repository
 public interface CustomReaderRepository extends ReactiveCrudRepository<Reader, Long> {
-    @Modifying
     @Query("""
-            UPDATE reader SET
-            first_name = :firstName,
-            last_name = :lastName,
-            city = :city,
-            status = :status,
-            last_modification_date = :now
-            where id = :id
+            SELECT * from Bibliotheque.reader
+            where last_name = :name;
             """)
-    Mono<Reader> updateReader(
-            Long id,
-            String firstName,
-            String lastName,
-            String city,
-            ReaderStatus status,
-            LocalDateTime now
-    );
+    Flux<Reader> findByName (String name);
+
+    @Query("""
+            SELECT * from Bibliotheque.reader
+            where credentials_id = :credentialId;
+            """)
+    Mono<Reader> findByCredentials(Long credentialId);
 }

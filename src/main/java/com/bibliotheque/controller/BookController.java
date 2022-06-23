@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/book")
+@CrossOrigin(origins = {"*"}, maxAge = 3600)
 public class BookController {
 
     private final BookService bookService;
@@ -21,6 +22,7 @@ public class BookController {
     }
 
     @GetMapping
+    @CrossOrigin(origins = {"*"})
     public Flux<BookResponse> getBooks() {
         return this.bookService.findAll();
     }
@@ -30,8 +32,8 @@ public class BookController {
         return this.bookService.findById(id);
     }
 
-    @GetMapping("/book/")
-    public Flux<BookResponse> getBookByTitle(@RequestBody BookRequest bookRequest) {
+    @GetMapping("/request")
+    public Flux<BookResponse> getBookByRequest(@RequestBody BookRequest bookRequest) {
         return this.bookService.findBook(bookRequest);
     }
 

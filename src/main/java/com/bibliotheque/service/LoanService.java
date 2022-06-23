@@ -42,8 +42,12 @@ public class LoanService {
         return loanRepo.findAll().flatMap(this::convertIntoResponse);
     }
 
-    public Mono<LoanResponse> findById(long id) {
-        return loanRepo.findById(id).flatMap(this::convertIntoResponse);
+    public Mono<LoanResponse> findById(long loanId) {
+        return loanRepo.findById(loanId).flatMap(this::convertIntoResponse);
+    }
+
+    public Mono<LoanResponse> findByBookId(long bookId) {
+        return loanRepo.findByBookId(bookId).flatMap(this::convertIntoResponse);
     }
 
     public Flux<LoanResponse> findAllOnGoing() {
@@ -121,4 +125,6 @@ public class LoanService {
                     );
                 });
     }
+
+
 }

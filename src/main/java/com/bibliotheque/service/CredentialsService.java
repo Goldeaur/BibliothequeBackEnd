@@ -19,11 +19,17 @@ public class CredentialsService {
 
 
     public Mono<CredentialsResponse> saveCredentials(Credentials credentials) {
-        return credentialsRepo.save(credentials).flatMap(this::convertIntoResponse);
+        return credentialsRepo.save(credentials).map(this::convertIntoResponse);
     }
 
     public Mono<CredentialsResponse> findById(Long id) {
-        return credentialsRepo.findById(id).flatMap(this::convertIntoResponse);
+        return credentialsRepo.findById(id).map(this::convertIntoResponse);
+    }
+
+    public Mono<CredentialsResponse> findByCredentials (String email, String encodedPassword){
+        return credentialsRepo.findByCredentials(email, encodedPassword)
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("incorrect login and/or password")))
+                .map(this::convertIntoResponse);
     }
 
     public Mono<CredentialsResponse> updateCredentials(Long id, CredentialsRequest credentialsRequest) {
@@ -40,21 +46,19 @@ public class CredentialsService {
                             now,
                             previousCredentials.getRole()
                     );
-                    return credentialsRepo.save(credentialToSave).flatMap(this::convertIntoResponse);
+                    return credentialsRepo.save(credentialToSave).map(this::convertIntoResponse);
                 });
     }
 
-    private Mono<CredentialsResponse> convertIntoResponse(Credentials credentials) {
-        return Mono.just(
-                CredentialsResponse.builder()
+    private CredentialsResponse convertIntoResponse(Credentials credentials) {
+               return CredentialsResponse.builder()
                         .creationDate(credentials.getCreationDate())
                         .email(credentials.getEmail())
                         .phone(credentials.getPhone())
                         .id(credentials.getId())
                         .role(credentials.getRole())
                         .lastModificationDate(credentials.getLastModificationDate())
-                        .build()
-        );
+                        .build();
     }
 
 }

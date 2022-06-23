@@ -1,9 +1,7 @@
 package com.bibliotheque.service;
 
-import com.bibliotheque.exception.ErrorMessage;
 import com.bibliotheque.exception.MalformedRequestException;
 import com.bibliotheque.exception.ResourceNotFoundException;
-import com.bibliotheque.exception.UnauthorizedRequestException;
 import com.bibliotheque.model.dao.Book;
 import com.bibliotheque.model.dto.BookRequest;
 import com.bibliotheque.model.dto.BookResponse;
@@ -52,10 +50,6 @@ public class BookService {
                     .map(this::convertIntoResponse);
         }
         return Flux.error(new MalformedRequestException("search can't be complete. Title or author or type must not be null"));
-    }
-
-    public Mono<BookResponse> saveBook(Book book) {
-        return bookRepository.save(book).map(this::convertIntoResponse);
     }
 
     public Mono<BookResponse> updateBook(long id, BookRequest bookRequest) {
@@ -148,6 +142,7 @@ public class BookService {
                 .id(book.getId())
                 .isbn10(book.getIsbn10())
                 .isbn13(book.getIsbn13())
+                .imageLink(book.getImageLink())
                 .title(book.getTitle())
                 .author(book.getAuthor())
                 .epoch(book.getEpoch())
@@ -156,6 +151,7 @@ public class BookService {
                 .subType(book.getSubType())
                 .readerCategory(book.getReaderCategory())
                 .comment(book.getComment())
+                .description(book.getDescription())
                 .refBibli(book.getRefBibli())
                 .creationDate(book.getCreationDate())
                 .lastModificationDate(book.getLastModificationDate())

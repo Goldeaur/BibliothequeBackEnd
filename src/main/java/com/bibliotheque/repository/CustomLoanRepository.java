@@ -4,6 +4,7 @@ import com.bibliotheque.model.dao.Loan;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface CustomLoanRepository extends ReactiveCrudRepository<Loan, Long> {
 
@@ -30,4 +31,10 @@ public interface CustomLoanRepository extends ReactiveCrudRepository<Loan, Long>
             where reader_id = :readerId;
             """)
    Flux<Loan> findByReaderId(long readerId);
+
+    @Query("""
+            Select * from loan
+            where book_id = : bookId;
+            """)
+    Mono<Loan> findByBookId(long bookId);
 }

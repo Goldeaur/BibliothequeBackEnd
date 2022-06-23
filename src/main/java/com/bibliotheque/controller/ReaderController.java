@@ -1,6 +1,7 @@
 package com.bibliotheque.controller;
 
 import com.bibliotheque.model.dto.CreateReaderRequest;
+import com.bibliotheque.model.dto.CredentialsRequest;
 import com.bibliotheque.model.dto.ReaderResponse;
 import com.bibliotheque.model.dto.UpdateReaderRequest;
 import com.bibliotheque.service.ReaderService;
@@ -19,11 +20,16 @@ public class ReaderController {
     @Autowired
     private ReaderService readerService;
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public Mono<ResponseEntity<ReaderResponse>> getReaderById(@PathVariable Long id) {
         return readerService.findById(id)
                 .map(readerResponse -> new ResponseEntity<>(readerResponse, HttpStatus.OK))
                 .switchIfEmpty(Mono.just(new ResponseEntity<>(null, HttpStatus.NOT_FOUND)));
+    }
+
+    @GetMapping("/name/{name}")
+    public Flux<ReaderResponse> getReaderByName(@PathVariable String name) {
+        return readerService.findByName(name);
     }
 
     @GetMapping
@@ -37,8 +43,12 @@ public class ReaderController {
                 .map(readerResponse -> new ResponseEntity<>(readerResponse, HttpStatus.CREATED));
     }
 
+    @PostMapping("/authenticate")
+    public Mono<ReaderResponse> authenticate (@RequestBody CredentialsRequest credentialsRequest) {
+        return readerService.authenticate(credentialsRequest);
+    }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
             public Mono<ReaderResponse> updateReader(@PathVariable Long id, @RequestBody UpdateReaderRequest readerRequest) {
         return readerService.updateReader(id, readerRequest);
     }
