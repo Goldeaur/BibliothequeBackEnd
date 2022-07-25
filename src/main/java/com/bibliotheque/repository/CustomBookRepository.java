@@ -8,8 +8,6 @@ import reactor.core.publisher.Flux;
 
 @Repository
 public interface CustomBookRepository extends ReactiveCrudRepository<Book, Long> {
-
-
     @Query("""           
             Select * from Bibliotheque.book
             where description is null;

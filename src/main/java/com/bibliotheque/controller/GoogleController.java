@@ -20,7 +20,7 @@ public class GoogleController {
     }
 
     @PostMapping("/{id}")
-    public Mono<GoogleBooksResponse> updateBook(@RequestBody GoogleRequest googleRequest) {
+    public Mono<GoogleBooksResponse> askGoogleBooks(@RequestBody GoogleRequest googleRequest) {
         return this.googleService.askGoogle(googleRequest);
     }
 

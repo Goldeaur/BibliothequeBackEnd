@@ -64,7 +64,7 @@ public class SecurityConfig {
                 .switchIfEmpty(Mono.defer(() -> Mono.error(new LoginException("login Not Found"))));
     }*/
 
-/*    @Bean
+    @Bean
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {
         return http
                 .csrf().disable().cors(corsSpec -> corsSpec.configurationSource(
@@ -78,13 +78,16 @@ public class SecurityConfig {
                 .and()
                 .formLogin().disable()
                 .build();
-    }*/
+    }
 
     @Bean
     UrlBasedCorsConfigurationSource corsMediaSpotConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+        //todo goOd uri here
         configuration.setAllowedOrigins(Arrays.asList("*"));
+
         configuration.setAllowedHeaders(Arrays.asList("*"));
+
         configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
