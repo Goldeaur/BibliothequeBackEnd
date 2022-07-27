@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
@@ -16,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.util.matcher.PathPatternParserServerWebExchangeMatcher;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
@@ -32,9 +33,18 @@ public class SecurityConfig {
         this.credentialsRepository = credentialsRepository;
     }
 
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication().withUser("Gigi").password("{noop}123").roles("ADMIN");
+        auth.inMemoryAuthentication().withUser("Titi").password("{noop}123").roles("ADMIN");
+        auth.inMemoryAuthentication().withUser("reader").password("{noop}123").roles("READER");
+    }
 
-    /*
-     *
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests().anyRequest().authenticated();
+        http.formLogin();
+    }
+
+    /**
      * A custom UserDetailsService to provide quick user rights for Spring Security,
      * more formal implementations may be added as separated files and annotated as
      * a Spring stereotype.
@@ -55,6 +65,7 @@ public class SecurityConfig {
     }
 
 
+
     //TODO
     @Autowired
     private CustomCredentialsRepository credentialsRepository;
@@ -68,10 +79,14 @@ public class SecurityConfig {
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {
         return http
                 .csrf().disable().cors(corsSpec -> corsSpec.configurationSource(
-                        corsMediaSpotConfigurationSource()
-                )).authorizeExchange()
+                        corsMediaSpotConfigurationSource()))
+                .authorizeExchange()
                 .matchers(new PathPatternParserServerWebExchangeMatcher("/**", HttpMethod.OPTIONS)).permitAll()
-                .pathMatchers("/").permitAll()
+                .pathMatchers(HttpMethod.POST, "/book/**").hasRole("ADMIN")
+                .pathMatchers(HttpMethod.PUT, "/book/**").hasRole("ADMIN")
+                .pathMatchers(HttpMethod.POST, "/google").hasRole("ADMIN")
+                .pathMatchers("/loan").hasRole("ADMIN")
+                .pathMatchers("/**").permitAll()
                 .anyExchange().authenticated()
                 .and()
                 .httpBasic()

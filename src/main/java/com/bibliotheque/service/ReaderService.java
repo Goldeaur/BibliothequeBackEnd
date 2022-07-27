@@ -6,6 +6,7 @@ import com.bibliotheque.model.dao.Reader;
 import com.bibliotheque.model.dto.*;
 import com.bibliotheque.model.statuses.ReaderStatus;
 import com.bibliotheque.repository.CustomReaderRepository;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -28,11 +29,18 @@ public class ReaderService {
         this.credentialsService = credentialsService;
     }
 
-    public Mono<ReaderResponse> authenticate(CredentialsRequest request){
+    public Mono<ReaderResponse> authenticate(CredentialsRequest request) {
         String login = request.email();
-        String password = passwordEncoder.encode(request.password());
-        return this.credentialsService.findByCredentials(login, password)
-                .flatMap(credentialsResponse -> findByCredentials(credentialsResponse.id()));
+        String password = request.password();
+
+        return this.credentialsService.findPasswordByEmail(login).flatMap(
+                encodedPassword -> {
+                    if (this.passwordEncoder.matches(password, encodedPassword)) {
+                        return this.credentialsService.findByEmail(login)
+                                .flatMap(credentialsResponse -> findByCredentials(credentialsResponse.id()));
+                    }
+                    return Mono.error(new BadCredentialsException("incorrect login and/or password"));
+                });
 
     }
 
@@ -40,7 +48,7 @@ public class ReaderService {
         return this.readerRepo.findAll().flatMap(this::convertIntoResponse);
     }
 
-    public Mono<ReaderResponse> findByCredentials (Long credentialId){
+    public Mono<ReaderResponse> findByCredentials(Long credentialId) {
         return readerRepo.findByCredentials(credentialId).flatMap(this::convertIntoResponse);
     }
 
@@ -93,9 +101,9 @@ public class ReaderService {
                             readerRequest.status() != null ? readerRequest.status() : previousReaderData.getStatus(),
                             previousReaderData.getCreationDate(),
                             now,
-                           previousReaderData.getCredentialsId()
+                            previousReaderData.getCredentialsId()
                     );
-                           return readerRepo.save(readerToSave).flatMap(this::convertIntoResponse);
+                    return readerRepo.save(readerToSave).flatMap(this::convertIntoResponse);
                 });
     }
 

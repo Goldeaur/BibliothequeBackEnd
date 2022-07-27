@@ -26,10 +26,15 @@ public class CredentialsService {
         return credentialsRepo.findById(id).map(this::convertIntoResponse);
     }
 
-    public Mono<CredentialsResponse> findByCredentials (String email, String encodedPassword){
-        return credentialsRepo.findByCredentials(email, encodedPassword)
+    public Mono<CredentialsResponse> findByEmail(String email){
+        return credentialsRepo.findByEmail(email)
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException("incorrect login and/or password")))
                 .map(this::convertIntoResponse);
+    }
+
+    public Mono<String> findPasswordByEmail (String email){
+        return credentialsRepo.findPasswordByEmail(email)
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("incorrect login")));
     }
 
     public Mono<CredentialsResponse> updateCredentials(Long id, CredentialsRequest credentialsRequest) {

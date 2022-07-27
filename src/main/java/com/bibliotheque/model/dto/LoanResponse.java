@@ -11,6 +11,6 @@ public record LoanResponse(
         LocalDateTime returnDate,
         LoanStatus status,
         BookResponse bookResponse,
-        ReaderResponse readerresponse
+        ReaderResponse readerResponse
 ) {
 }
