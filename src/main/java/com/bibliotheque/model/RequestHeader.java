@@ -12,8 +12,8 @@ public class RequestHeader {
 
     @Getter
     public class Names{
-        String firstName;
-        String lastName;
+        String firstname;
+        String lastname;
     }
 
 }

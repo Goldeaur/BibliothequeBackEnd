@@ -5,8 +5,8 @@ import lombok.Builder;
 
 @Builder
 public record UpdateReaderRequest(
-        String firstName,
-        String lastName,
+        String firstname,
+        String lastname,
         String city,
         ReaderStatus status) {
 }

@@ -5,8 +5,8 @@ import lombok.Builder;
 
 @Builder
 public record CreateReaderRequest(
-     String firstName,
-     String lastName,
+     String firstname,
+     String lastname,
      String city,
      ReaderStatus status,
      CredentialsRequest credentials

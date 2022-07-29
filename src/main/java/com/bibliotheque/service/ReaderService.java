@@ -62,6 +62,7 @@ public class ReaderService {
                 .flatMap(this::convertIntoResponse);
     }
 
+    //TODO error handling !!! already Exist Exception etc...
     public Mono<ReaderResponse> createReader(CreateReaderRequest readerRequest) {
         LocalDateTime now = LocalDateTime.now();
         CredentialsRequest credentialsRequest = readerRequest.credentials();
@@ -79,8 +80,8 @@ public class ReaderService {
                     .city(readerRequest.city())
                     .creationDate(now)
                     .lastModificationDate(now)
-                    .firstName(readerRequest.firstName())
-                    .lastName(readerRequest.lastName().toUpperCase())
+                    .firstname(readerRequest.firstname())
+                    .lastname(readerRequest.lastname().toUpperCase())
                     .credentialsId(credentialsResponse.id())
                     .status(ReaderStatus.NEW)
                     .build();
@@ -95,8 +96,8 @@ public class ReaderService {
                     LocalDateTime now = LocalDateTime.now();
                     Reader readerToSave = new Reader(
                             idRequested,
-                            readerRequest.firstName() != null ? readerRequest.firstName() : previousReaderData.getFirstName(),
-                            readerRequest.lastName() != null ? readerRequest.lastName() : previousReaderData.getLastName(),
+                            readerRequest.firstname() != null ? readerRequest.firstname() : previousReaderData.getFirstname(),
+                            readerRequest.lastname() != null ? readerRequest.lastname() : previousReaderData.getLastname(),
                             readerRequest.city() != null ? readerRequest.city() : previousReaderData.getCity(),
                             readerRequest.status() != null ? readerRequest.status() : previousReaderData.getStatus(),
                             previousReaderData.getCreationDate(),
@@ -114,8 +115,8 @@ public class ReaderService {
                         credentialsResponse ->
                                 ReaderResponse.builder()
                                         .id(reader.getId())
-                                        .firstName(reader.getFirstName())
-                                        .lastName(reader.getLastName())
+                                        .firstname(reader.getFirstname())
+                                        .lastname(reader.getLastname())
                                         .city(reader.getCity())
                                         .creationDate(reader.getCreationDate())
                                         .lastModificationDate(reader.getLastModificationDate())

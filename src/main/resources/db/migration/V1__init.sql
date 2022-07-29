@@ -20,13 +20,12 @@ CREATE TABLE IF NOT EXISTS book (
 
 CREATE TABLE IF NOT EXISTS credentials (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  login varchar(250) NOT NULL,
   password varchar(250) NOT NULL,
   phone varchar(250) NOT NULL,
   email varchar(250) NOT NULL UNIQUE,
   creation_date datetime not null default now(),
   last_modification_date datetime not null default now(),
-  role varchar(50) DEFAULT 'reader' not null);
+  role varchar(50) DEFAULT 'READER' not null);
 
 CREATE TABLE IF NOT EXISTS reader (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,

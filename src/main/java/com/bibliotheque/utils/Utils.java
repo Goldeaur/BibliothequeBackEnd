@@ -1,6 +1,5 @@
 package com.bibliotheque.utils;
 
-import com.bibliotheque.model.statuses.HumanStatus;
 import com.bibliotheque.model.Role;
 import com.bibliotheque.model.RequestHeader;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,11 +28,11 @@ public class Utils {
     }
 
     public static String toEncoded(RequestHeader.Names names, String id) {
-        return  toEncodedForPost(names.getFirstName(), names.getLastName(),id);
+        return  toEncodedForPost(names.getFirstname(), names.getLastname(),id);
     }
 
-    public static String toEncodedForPost(String firstName,String lastName, String id) {
-        String toBase64 = firstName + ":" + lastName + ":" + id;
+    public static String toEncodedForPost(String firstname,String lastname, String id) {
+        String toBase64 = firstname + ":" + lastname + ":" + id;
         Base64.Encoder encoder = Base64.getEncoder();
         byte[] data = toBase64.getBytes(UTF_8);
         return encoder.encodeToString(data);
@@ -57,15 +56,6 @@ public class Utils {
         if (role == null) return null;
         else if (role.toLowerCase(Locale.ROOT).equals("admin")) return Role.ADMIN;
         return Role.READER;
-    }
-
-    public static HumanStatus toStatus(String status) {
-        if (status == null) return null;
-        else if (status.toLowerCase(Locale.ROOT).equals("activated")) return HumanStatus.ACTIVATED;
-        else if (status.toLowerCase(Locale.ROOT).equals("inactivated")) return HumanStatus.INACTIVATED;
-        else if (status.toLowerCase(Locale.ROOT).equals("deleted")) return HumanStatus.DELETED;
-        else if (status.toLowerCase(Locale.ROOT).equals("created")) return HumanStatus.CREATED;
-        return HumanStatus.INACTIVATED;
     }
 
 

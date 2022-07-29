@@ -25,10 +25,10 @@ public class Reader {
     private Long id;
 
     @Column(value = "first_name")
-    private String firstName;
+    private String firstname;
 
     @Column(value = "last_name")
-    private String lastName;
+    private String lastname;
 
     @Column(value = "city")
     private String city;

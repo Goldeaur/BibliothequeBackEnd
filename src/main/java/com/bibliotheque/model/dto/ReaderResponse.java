@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 @Builder
 public record ReaderResponse (
      Long id,
-     String firstName,
-     String lastName,
+     String firstname,
+     String lastname,
      String city,
      LocalDateTime creationDate,
      LocalDateTime lastModificationDate,
