@@ -34,7 +34,7 @@ public class CredentialsService {
 
     public Mono<String> findPasswordByEmail (String email){
         return credentialsRepo.findPasswordByEmail(email)
-                .switchIfEmpty(Mono.error(new ResourceNotFoundException("incorrect login")));
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Incorrect login")));
     }
 
     public Mono<CredentialsResponse> updateCredentials(Long id, CredentialsRequest credentialsRequest) {
