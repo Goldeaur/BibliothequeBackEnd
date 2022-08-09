@@ -1,5 +1,7 @@
 package com.bibliotheque.service;
 
+import com.bibliotheque.exception.MalformedRequestException;
+import com.bibliotheque.exception.ResourceAlreadyExistsException;
 import com.bibliotheque.exception.ResourceNotFoundException;
 import com.bibliotheque.model.dao.Credentials;
 import com.bibliotheque.model.dao.Reader;
@@ -74,7 +76,17 @@ public class ReaderService {
                 .creationDate(now)
                 .lastModificationDate(now)
                 .build();
-        Mono<CredentialsResponse> credentialsMono = this.credentialsService.saveCredentials(encodedCredentials);
+        Mono<CredentialsResponse> credentialsMono = this.credentialsService.saveCredentials(encodedCredentials)
+                .onErrorMap(throwable -> {
+                    if (throwable.getCause().getMessage().contains("Duplicate entry")) {
+                        return new ResourceAlreadyExistsException(throwable.getCause().getMessage());
+                    }
+                    else if (throwable.getCause().getMessage().contains("not-null constraint"))
+                        return new MalformedRequestException(throwable.getCause().getMessage());
+                    else return throwable;
+
+                });
+
         return credentialsMono.flatMap(credentialsResponse -> {
             Reader readerToSave = Reader.builder()
                     .city(readerRequest.city())
