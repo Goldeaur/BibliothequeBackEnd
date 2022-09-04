@@ -1,10 +1,15 @@
 package com.bibliotheque.controller;
 
-import com.bibliotheque.model.dto.googleBook.GoogleBooksResponse;
-import com.bibliotheque.model.dto.googleBook.GoogleRequest;
+import com.bibliotheque.model.dto.BookRequest;
+import com.bibliotheque.model.dto.BookResponse;
 import com.bibliotheque.service.GoogleService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/google")
@@ -17,7 +22,7 @@ public class GoogleController {
     }
 
     @PostMapping()
-    public Mono<GoogleBooksResponse> askGoogleBooks(@RequestBody GoogleRequest googleRequest) {
+    public Mono<List<BookResponse>> askGoogleBooks(@RequestBody BookRequest googleRequest) {
         return this.googleService.askGoogle(googleRequest);
     }
 

@@ -19,4 +19,10 @@ public interface CustomCredentialsRepository extends ReactiveCrudRepository<Cred
             where email = :email;
             """)
         Mono<String> findPasswordByEmail(String email);
+
+    @Query("""
+            select * from Bibliotheque.credentials
+            where id = :id;
+            """)
+    Mono<Credentials> findById(Long id);
 }
