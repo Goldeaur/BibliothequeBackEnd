@@ -11,30 +11,30 @@ public interface CustomBookRepository extends ReactiveCrudRepository<Book, Long>
 
 
     @Query("""           
-            Select * from Bibliotheque.book
+            Select * from bibliotheque.book
             """)
     Flux<Book> findAll();
 
     @Query("""           
-            Select * from Bibliotheque.book
+            Select * from bibliotheque.book
             where description is null;
             """)
     Flux<Book> findBooksToComplete();
 
     @Query("""           
-            Select * from Bibliotheque.book
+            Select * from bibliotheque.book
             where title = :title;
             """)
     Flux<Book> findByTitle (String title);
 
     @Query("""           
-            Select * from Bibliotheque.book
+            Select * from bibliotheque.book
             where author = :author;
             """)
     Flux<Book> findByAuthor (String author);
 
     @Query("""           
-            Select * from Bibliotheque.book
+            Select * from bibliotheque.book
             where type = :type;
             """)
     Flux<Book> findByType (String type);

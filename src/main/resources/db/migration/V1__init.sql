@@ -1,3 +1,4 @@
+USE Bibliotheque;
 CREATE DATABASE IF NOT EXISTS Bibliotheque;
 USE Bibliotheque;
 

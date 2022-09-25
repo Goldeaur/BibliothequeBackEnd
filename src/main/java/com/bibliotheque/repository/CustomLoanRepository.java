@@ -9,31 +9,31 @@ import reactor.core.publisher.Mono;
 public interface CustomLoanRepository extends ReactiveCrudRepository<Loan, Long> {
 
     @Query("""
-            Select * from loan
+            Select * from from bibliotheque.loan
             where status = ONGOING;
             """)
     Flux<Loan> findAllOnGoing();
 
     @Query("""
-            Select * from loan
+            Select * from bibliotheque.loan
             where status = LATE;
             """)
     Flux<Loan> findAllLate();
 
     @Query("""
-            Select * from loan
+            Select * from bibliotheque.loan
             where status = TODAY;
             """)
     Flux<Loan> findAllTODAY();
 
     @Query("""
-            Select * from loan
+            Select * from bibliotheque.loan
             where reader_id = :readerId;
             """)
    Flux<Loan> findByReaderId(long readerId);
 
     @Query("""
-            Select * from loan
+            Select * from bibliotheque.loan
             where book_id = : bookId;
             """)
     Mono<Loan> findByBookId(long bookId);
