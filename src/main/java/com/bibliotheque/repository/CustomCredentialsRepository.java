@@ -10,19 +10,14 @@ import reactor.core.publisher.Mono;
 public interface CustomCredentialsRepository extends ReactiveCrudRepository<Credentials, Long> {
 
     @Query("""
-            select * from bibliotheque.credentials
+            select * from Bibliotheque.credentials
             where email = :email;
             """)
         Mono<Credentials> findByEmail(String email);
     @Query("""
-            select password from bibliotheque.credentials
+            select password from Bibliotheque.credentials
             where email = :email;
             """)
         Mono<String> findPasswordByEmail(String email);
 
-    @Query("""
-            select * from bibliotheque.credentials
-            where id = :id;
-            """)
-    Mono<Credentials> findById(Long id);
 }

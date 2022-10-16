@@ -10,19 +10,15 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface CustomReaderRepository extends ReactiveCrudRepository<Reader, Long> {
     @Query("""
-            SELECT * from bibliotheque.reader
+            SELECT * from Bibliotheque.reader
             where last_name = :name;
             """)
     Flux<Reader> findByName (String name);
 
     @Query("""
-            SELECT * from bibliotheque.reader
+            SELECT * from Bibliotheque.reader
             where credentials_id = :credentialId;
             """)
     Mono<Reader> findByCredentials(Long credentialId);
 
-    @Query("""
-            SELECT * from bibliotheque.reader
-            """)
-    Flux<Reader> findAll();
 }

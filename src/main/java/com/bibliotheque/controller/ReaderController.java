@@ -44,12 +44,12 @@ public class ReaderController {
     }
 
     @PostMapping("/authenticate")
-    public Mono<ReaderResponse> authenticate (@RequestBody CredentialsRequest credentialsRequest) {
+    public Mono<ReaderResponse> authenticate(@RequestBody CredentialsRequest credentialsRequest) {
         return readerService.authenticate(credentialsRequest);
     }
 
     @PutMapping("/{id}")
-            public Mono<ReaderResponse> updateReader(@PathVariable Long id, @RequestBody UpdateReaderRequest readerRequest) {
+    public Mono<ReaderResponse> updateReader(@PathVariable Long id, @RequestBody UpdateReaderRequest readerRequest) {
         return readerService.updateReader(id, readerRequest);
     }
 
