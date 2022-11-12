@@ -5,24 +5,27 @@ import com.bibliotheque.model.dto.BookResponse;
 import com.bibliotheque.model.dto.googleBook.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class GoogleService {
 
     String key = "AIzaSyBHlroHFBr8Fs8D3QeHS_JJjvR-8zPwaNE";
 
-    public Mono<List<BookResponse>> askGoogle(BookRequest googleRequest) {
+    public Flux<BookResponse> askGoogle(BookRequest googleRequest) {
         RestTemplate restTemplate = new RestTemplate();
         var title = formatTitle(googleRequest.title());
         var author = formatAuthor(googleRequest.author());
         var response = restTemplate.getForEntity(
                 "https://www.googleapis.com/books/v1/volumes?q=" + title + "+inauthor:" + author + "&key=" + key, GoogleBooksResponse.class);
         GoogleBooksResponse googleResponse = Objects.requireNonNull(response.getBody());
-
-        return Mono.just(translateIntoBookResponse(googleResponse, googleRequest));
+        var future = new CompletableFuture<List<BookResponse>>();
+        future.completeAsync(() -> translateIntoBookResponse(googleResponse, googleRequest));
+        return Mono.fromFuture(future).flatMapIterable(list -> list);
     }
 
     private String formatTitle(String title) {
