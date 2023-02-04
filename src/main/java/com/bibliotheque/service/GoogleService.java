@@ -1,5 +1,6 @@
 package com.bibliotheque.service;
 
+import com.bibliotheque.exception.MalformedRequestException;
 import com.bibliotheque.model.dto.BookRequest;
 import com.bibliotheque.model.dto.BookResponse;
 import com.bibliotheque.model.dto.googleBook.*;
@@ -17,6 +18,9 @@ public class GoogleService {
     String key = "AIzaSyBHlroHFBr8Fs8D3QeHS_JJjvR-8zPwaNE";
 
     public Flux<BookResponse> askGoogle(BookRequest googleRequest) {
+        if(googleRequest.title() == null || googleRequest.author() == null){
+           return Flux.error(new MalformedRequestException("Author and title are required to ask google"));
+        }
         RestTemplate restTemplate = new RestTemplate();
         var title = formatTitle(googleRequest.title());
         var author = formatAuthor(googleRequest.author());
