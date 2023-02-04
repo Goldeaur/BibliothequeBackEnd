@@ -17,19 +17,86 @@ public interface CustomBookRepository extends ReactiveCrudRepository<Book, Long>
 
     @Query("""           
             Select * from Bibliotheque.book
-            where title = :title;
+            where title like '%:title%' order by title;
             """)
     Flux<Book> findByTitle (String title);
 
     @Query("""           
             Select * from Bibliotheque.book
-            where author = :author;
+            where author like '%:author%' order by author;
             """)
     Flux<Book> findByAuthor (String author);
+
+    @Query("""           
+            Select * from Bibliotheque.book
+            where nationality = :nationality order by title;
+            """)
+    Flux<Book> findByNationality (String nationality);
+
+    @Query("""           
+            Select * from Bibliotheque.book
+            where reader_category = :readerCategory order by title;
+            """)
+    Flux<Book> findByReaderCategory (String readerCategory);
+
+    @Query("""
+            Select * from Select * from Bibliotheque.book
+            where status = :status;
+            """)
+    Flux<Book> findByStatus(String status);
 
     @Query("""           
             Select * from Bibliotheque.book
             where type = :type;
             """)
     Flux<Book> findByType (String type);
+
+    @Query("""           
+            Select * from Bibliotheque.book
+            where sub_type = :subType;
+            """)
+    Flux<Book> findBySubType (String subType);
+
+    @Query("""           
+            Select * from Bibliotheque.book
+            where epoch = :epoch;
+            """)
+    Flux<Book> findBySEpoch (String epoch);
+
+
+    @Query("""
+            select DISTINCT author from Bibliotheque.book;
+            """)
+    Flux<String> findAuthors ();
+
+    @Query("""
+            select DISTINCT title from Bibliotheque.book;
+            """)
+    Flux<String> findtitles ();
+
+    @Query("""
+            select DISTINCT epoch from Bibliotheque.book;
+            """)
+    Flux<String> findEpochs ();
+
+    @Query("""
+            select DISTINCT type from Bibliotheque.book;
+            """)
+    Flux<String> findTypes ();
+
+    @Query("""
+            select DISTINCT sub_type from Bibliotheque.book;
+            """)
+    Flux<String> findSubTypes ();
+
+    @Query("""
+            select DISTINCT reader_category from Bibliotheque.book;
+            """)
+    Flux<String> findReaderCategories();
+
+    @Query("""
+            select DISTINCT nationality from Bibliotheque.book;
+            """)
+    Flux<String> findNationalities();
+
 }

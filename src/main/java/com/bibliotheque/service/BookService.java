@@ -12,6 +12,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -19,11 +22,8 @@ public class BookService {
 
     private final CustomBookRepository bookRepository;
 
-    private final GoogleService googleService;
-
-    public BookService(CustomBookRepository bookRepository, GoogleService googleService) {
+    public BookService(CustomBookRepository bookRepository) {
         this.bookRepository = bookRepository;
-        this.googleService = googleService;
     }
 
     public Mono<BookResponse> saveBook(BookRequest bookRequest) {
@@ -31,25 +31,86 @@ public class BookService {
         return bookRepository.save(book).map(this::convertIntoResponse);
     }
 
+    public Flux<String> findAuthors(){
+        return bookRepository.findAuthors();
+    }
+
+    public Flux<String> findTitles(){
+        return bookRepository.findtitles();
+    }
+
+    public Flux<String> findEpochs(){
+        return bookRepository.findEpochs();
+    }
+
+    public Flux<String> findTypes(){
+        return bookRepository.findTypes();
+    }
+
+    public Flux<String> findSubTypes(){
+        return bookRepository.findSubTypes();
+    }
+
+    public Flux<String> findReaderCategories(){return bookRepository.findReaderCategories();}
+
+    public Flux<String> findNationalities(){return bookRepository.findNationalities();}
+
+    public Mono<List<String>> findStatuses() {return Mono.just(Arrays.stream(BookStatus.values()).map(BookStatus::name).toList());}
+
+    public Flux<BookResponse> findBooks(BookStatus bookStatus){
+        return bookRepository.findByStatus(bookStatus.name())
+                .map(this::convertIntoResponse);
+    }
+
     public Flux<BookResponse> findBooksToComplete() {
         return bookRepository.findBooksToComplete()
                 .map(this::convertIntoResponse);
     }
 
-    public Flux<BookResponse> findBook(BookRequest bookRequest) {
+    public Flux<BookResponse> findBooks(BookRequest bookRequest) {
+        if(Objects.isNull(bookRequest.title()) &&
+                Objects.isNull(bookRequest.author())&&
+                Objects.isNull(bookRequest.type()) &&
+                Objects.isNull(bookRequest.subType()) &&
+                Objects.isNull(bookRequest.epoch()) &&
+                Objects.isNull(bookRequest.status())) {
+            return Flux.error(new MalformedRequestException(
+                    "search can't be completed. Title or author or type or subtype or epoch or status must not be null"
+            ));
+        }
+
+        Flux<BookResponse> result = Flux.empty();
+
         if (bookRequest.title() != null) {
-            return bookRepository.findByTitle(bookRequest.title())
-                    .map(this::convertIntoResponse);
+            result.mergeWith(bookRepository.findByTitle(bookRequest.title())
+                    .map(this::convertIntoResponse));
         }
         if (bookRequest.author() != null) {
-            return bookRepository.findByAuthor(bookRequest.author())
-                    .map(this::convertIntoResponse);
+            result.mergeWith(bookRepository.findByAuthor(bookRequest.author())
+                    .map(this::convertIntoResponse));
         }
         if(bookRequest.type() != null) {
-            return bookRepository.findByType(bookRequest.type())
-                    .map(this::convertIntoResponse);
+            result.mergeWith(bookRepository.findByType(bookRequest.type())
+                    .map(this::convertIntoResponse));
         }
-        return Flux.error(new MalformedRequestException("search can't be complete. Title or author or type must not be null"));
+        if(bookRequest.subType() != null){
+            result.mergeWith(bookRepository.findBySubType(bookRequest.subType())
+                    .map(this::convertIntoResponse));
+        }
+        if(bookRequest.epoch() != null){
+            result.mergeWith(bookRepository.findBySEpoch(bookRequest.epoch())
+                    .map(this::convertIntoResponse));
+        }
+        if(bookRequest.nationality() != null){
+            result.mergeWith(bookRepository.findByNationality(bookRequest.nationality())
+                    .map(this::convertIntoResponse));
+        }
+        if(bookRequest.readerCategory() != null){
+            result.mergeWith(bookRepository.findByReaderCategory(bookRequest.readerCategory())
+                    .map(this::convertIntoResponse));
+        }
+
+        return result.distinct();
     }
 
     public Mono<BookResponse> updateBook(long id, BookRequest bookRequest) {
@@ -158,4 +219,6 @@ public class BookService {
                 .status(book.getStatus())
                 .build();
     }
+
+
 }
