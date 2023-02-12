@@ -12,9 +12,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping(value="/book", produces="application/json")
+@RequestMapping(value = "/book", produces = "application/json")
 @CrossOrigin(origins = {"*"}, maxAge = 3600)
 public class BookController {
 
@@ -30,7 +31,7 @@ public class BookController {
         return this.bookService.findAll();
     }
 
-    @GetMapping("/author")
+    @GetMapping("/authors")
     public Mono<List<String>> getAuthors() {
         return this.bookService.findAuthors().collectList();
     }
@@ -40,7 +41,7 @@ public class BookController {
         return this.bookService.findTitles().collectList();
     }
 
-    @GetMapping("/epoch")
+    @GetMapping("/epochs")
     public Mono<List<String>> getEpochs() {
         return this.bookService.findEpochs().collectList();
     }
@@ -55,12 +56,12 @@ public class BookController {
         return this.bookService.findSubTypes().collectList();
     }
 
-    @GetMapping("/category")
+    @GetMapping("/categories")
     public Mono<List<String>> getReaderCategories() {
         return this.bookService.findReaderCategories().collectList();
     }
 
-    @GetMapping(value="/nationality", produces = "application/json")
+    @GetMapping(value = "/nationalities", produces = "application/json")
     public Mono<List<String>> getNationalities() {
         return this.bookService.findNationalities().collectList();
     }
@@ -82,7 +83,7 @@ public class BookController {
 
     @GetMapping("/request")
     public Flux<BookResponse> getBookByRequest(@RequestBody BookRequest bookRequest) {
-        return this.bookService.findBooks(bookRequest);
+        return this.bookService.findBooksByFilters(bookRequest);
     }
 
     @GetMapping("/incomplete")
