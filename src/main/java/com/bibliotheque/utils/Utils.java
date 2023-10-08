@@ -32,7 +32,7 @@ public class Utils {
         return  toEncodedForPost(names.getFirstname(), names.getLastname(),id);
     }
 
-    public static String toEncodedForPost(String firstname,String lastname, String id) {
+    private static String toEncodedForPost(String firstname,String lastname, String id) {
         String toBase64 = firstname + ":" + lastname + ":" + id;
         Base64.Encoder encoder = Base64.getEncoder();
         byte[] data = toBase64.getBytes(UTF_8);
