@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class GoogleService {
 
-    String key = "AIzaSyBHlroHFBr8Fs8D3QeHS_JJjvR-8zPwaNE";
+    final String KEY = "AIzaSyBHlroHFBr8Fs8D3QeHS_JJjvR-8zPwaNE";
 
     public Flux<BookResponse> askGoogle(BookRequest googleRequest) {
         if(googleRequest.title() == null || googleRequest.author() == null){
@@ -25,7 +25,7 @@ public class GoogleService {
         var title = formatTitle(googleRequest.title());
         var author = formatAuthor(googleRequest.author());
         var response = restTemplate.getForEntity(
-                "https://www.googleapis.com/books/v1/volumes?q=" + title + "+inauthor:" + author + "&key=" + key, GoogleBooksResponse.class);
+                "https://www.googleapis.com/books/v1/volumes?q=" + title + "+inauthor:" + author + "&key=" + KEY, GoogleBooksResponse.class);
         GoogleBooksResponse googleResponse = Objects.requireNonNull(response.getBody());
         var future = new CompletableFuture<List<BookResponse>>();
         future.completeAsync(() -> translateIntoBookResponse(googleResponse, googleRequest));
@@ -48,6 +48,9 @@ public class GoogleService {
 
 
     private List<BookResponse> translateIntoBookResponse(GoogleBooksResponse googleResponse, BookRequest googleRequest) {
+        if(Objects.isNull(googleResponse) || googleResponse.getTotalItems()==0){
+            return List.of();
+        }
         List<Item> items = Arrays.asList(googleResponse.getItems());
         if (items.isEmpty()) {
             return List.of();
@@ -85,8 +88,13 @@ public class GoogleService {
     }
 
     private String getAuthor(Item item) {
-        Optional<String> author = Arrays.stream(item.volumeInfo.authors).findFirst();
-        return author.isEmpty() ? "" : author.get();
+        try{
+        String author = Arrays.stream(item.volumeInfo.authors).findFirst().orElse("other");
+        return author;
+        }
+        catch(NullPointerException exception){
+            return "";
+        }
     }
 
     private String getImageLink(Item item) {

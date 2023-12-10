@@ -1,5 +1,6 @@
 package com.bibliotheque.service;
 
+import com.bibliotheque.converter.Converters;
 import com.bibliotheque.exception.ResourceNotFoundException;
 import com.bibliotheque.model.dao.Book;
 import com.bibliotheque.model.dto.BookRequest;
@@ -19,14 +20,16 @@ import java.util.List;
 public class BookService {
 
     private final CustomBookRepository bookRepository;
+    private final Converters converter;
 
-    public BookService(CustomBookRepository bookRepository) {
+    public BookService(CustomBookRepository bookRepository, Converters converter) {
         this.bookRepository = bookRepository;
+        this.converter = converter;
     }
 
     public Mono<BookResponse> saveBook(BookRequest bookRequest) {
-        Book book = convertIntoDao(bookRequest);
-        return bookRepository.save(book).map(this::convertIntoResponse);
+        Book book = converter.convertIntoDao(bookRequest);
+        return bookRepository.save(book).map(converter::convertIntoResponse);
     }
 
     public Flux<String> findAuthors() {
@@ -64,13 +67,13 @@ public class BookService {
     public Flux<BookResponse> findBooks(BookStatus bookStatus) {
         return bookRepository
                 .findByStatus(bookStatus.name())
-                .map(this::convertIntoResponse);
+                .map(converter::convertIntoResponse);
     }
 
     public Flux<BookResponse> findBooksToComplete() {
         return bookRepository
                 .findBooksToComplete()
-                .map(this::convertIntoResponse);
+                .map(converter::convertIntoResponse);
     }
 
     public Flux<BookResponse> findBooksByFilters(BookRequest bookRequest) {
@@ -82,7 +85,7 @@ public class BookService {
                         bookRequest.readerCategory(),
                         bookRequest.nationality(),
                         bookRequest.status() != null ? bookRequest.status().name() : null)
-                .map(this::convertIntoResponse);
+                .map(converter::convertIntoResponse);
     }
 
     public Mono<BookResponse> updateBook(long id, BookRequest bookRequest) {
@@ -108,7 +111,7 @@ public class BookService {
                                     .lastModificationDate(LocalDateTime.now())
                                     .status(bookRequest.status() != null ? bookRequest.status() : bookToUpdate.getStatus())
                                     .build();
-                            return bookRepository.save(bookToSave).map(this::convertIntoResponse);
+                            return bookRepository.save(bookToSave).map(converter::convertIntoResponse);
                         }
                 );
     }
@@ -136,59 +139,20 @@ public class BookService {
                             LocalDateTime.now(),
                             status != null ? status : bookToUpdate.getStatus()
                     );
-                    return bookRepository.save(bookToSave).map(this::convertIntoResponse);
+                    return bookRepository.save(bookToSave).map(converter::convertIntoResponse);
                 });
     }
 
 
     public Mono<BookResponse> findById(Long id) {
-        return bookRepository.findById(id).map(this::convertIntoResponse);
+        return bookRepository.findById(id).map(converter::convertIntoResponse);
     }
 
     public Flux<BookResponse> findAll() {
         return bookRepository.findAll().map(
-                this::convertIntoResponse
+                converter::convertIntoResponse
         );
     }
 
-    private Book convertIntoDao(BookRequest bookRequest) {
-        return Book.builder()
-                .isbn10(bookRequest.isbn10())
-                .isbn13(bookRequest.isbn13())
-                .title(bookRequest.title())
-                .author(bookRequest.author())
-                .epoch(bookRequest.epoch())
-                .nationality(bookRequest.nationality())
-                .type(bookRequest.type())
-                .subType(bookRequest.subType())
-                .readerCategory(bookRequest.readerCategory())
-                .comment(bookRequest.comment())
-                .refBibli(bookRequest.refBibli())
-                .creationDate(LocalDateTime.now())
-                .lastModificationDate(LocalDateTime.now())
-                .status(bookRequest.status())
-                .build();
-    }
 
-    private BookResponse convertIntoResponse(Book book) {
-        return BookResponse.builder()
-                .id(book.getId())
-                .isbn10(book.getIsbn10())
-                .isbn13(book.getIsbn13())
-                .imageLink(book.getImageLink())
-                .title(book.getTitle())
-                .author(book.getAuthor())
-                .epoch(book.getEpoch())
-                .nationality(book.getNationality())
-                .type(book.getType())
-                .subType(book.getSubType())
-                .readerCategory(book.getReaderCategory())
-                .comment(book.getComment())
-                .description(book.getDescription())
-                .refBibli(book.getRefBibli())
-                .creationDate(book.getCreationDate())
-                .lastModificationDate(book.getLastModificationDate())
-                .status(book.getStatus())
-                .build();
-    }
 }

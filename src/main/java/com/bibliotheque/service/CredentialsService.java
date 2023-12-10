@@ -1,11 +1,11 @@
 package com.bibliotheque.service;
 
+import com.bibliotheque.converter.Converters;
 import com.bibliotheque.exception.ResourceNotFoundException;
 import com.bibliotheque.model.dao.Credentials;
 import com.bibliotheque.model.dto.CredentialsRequest;
 import com.bibliotheque.model.dto.CredentialsResponse;
 import com.bibliotheque.repository.CustomCredentialsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -14,22 +14,29 @@ import java.time.LocalDateTime;
 @Service
 public class CredentialsService {
 
-    @Autowired
-    private CustomCredentialsRepository credentialsRepo;
+    private final CustomCredentialsRepository credentialsRepo;
+
+    private final Converters converter;
+
+    public CredentialsService(CustomCredentialsRepository credentialsRepo, Converters converter){
+        this.credentialsRepo = credentialsRepo;
+        this.converter = converter;
+    }
+
 
 
     public Mono<CredentialsResponse> saveCredentials(Credentials credentials) {
-        return credentialsRepo.save(credentials).map(this::convertIntoResponse);
+        return credentialsRepo.save(credentials).map(converter::convertIntoResponse);
     }
 
     public Mono<CredentialsResponse> findById(Long id) {
-        return credentialsRepo.findById(id).map(this::convertIntoResponse);
+        return credentialsRepo.findById(id).map(converter::convertIntoResponse);
     }
 
     public Mono<CredentialsResponse> findByEmail(String email){
         return credentialsRepo.findByEmail(email)
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException("incorrect login and/or password")))
-                .map(this::convertIntoResponse);
+                .map(converter::convertIntoResponse);
     }
 
     public Mono<String> findPasswordByEmail (String email){
@@ -51,19 +58,10 @@ public class CredentialsService {
                             now,
                             previousCredentials.getRole()
                     );
-                    return credentialsRepo.save(credentialToSave).map(this::convertIntoResponse);
+                    return credentialsRepo.save(credentialToSave).map(converter::convertIntoResponse);
                 });
     }
 
-    private CredentialsResponse convertIntoResponse(Credentials credentials) {
-               return CredentialsResponse.builder()
-                        .creationDate(credentials.getCreationDate())
-                        .email(credentials.getEmail())
-                        .phone(credentials.getPhone())
-                        .id(credentials.getId())
-                        .role(credentials.getRole())
-                        .lastModificationDate(credentials.getLastModificationDate())
-                        .build();
-    }
+
 
 }

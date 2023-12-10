@@ -17,6 +17,7 @@ import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Configuration
@@ -45,10 +46,10 @@ public class DatabaseConfiguration extends AbstractR2dbcConfiguration {
         ConnectionFactory connectionFactory =
                 ConnectionFactories.get(ob.build());
         ConnectionPoolConfiguration configuration = ConnectionPoolConfiguration.builder(connectionFactory)
-                .maxIdleTime(Duration.ofMinutes(Integer.valueOf(env.getProperty("spring.r2dbc.pool.maxIdleTime"))))
-                .initialSize(Integer.valueOf(env.getProperty("spring.r2dbc.pool.initialSize")))
-                .maxSize(Integer.valueOf(env.getProperty("spring.r2dbc.pool.maxSize")))
-               .maxCreateConnectionTime(Duration.ofSeconds(Integer.valueOf(env.getProperty("spring.r2dbc.pool.maxCreateConnectionTime"))))
+                .maxIdleTime(Duration.ofMinutes(Integer.parseInt(Objects.requireNonNull(env.getProperty("spring.r2dbc.pool.maxIdleTime")))))
+                .initialSize(Integer.parseInt(Objects.requireNonNull(env.getProperty("spring.r2dbc.pool.initialSize"))))
+                .maxSize(Integer.parseInt(Objects.requireNonNull(env.getProperty("spring.r2dbc.pool.maxSize"))))
+               .maxCreateConnectionTime(Duration.ofSeconds(Integer.parseInt(Objects.requireNonNull(env.getProperty("spring.r2dbc.pool.maxCreateConnectionTime")))))
                 .build();
         return new ConnectionPool(configuration);
     }
